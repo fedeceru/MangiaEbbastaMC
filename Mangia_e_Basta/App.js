@@ -18,65 +18,51 @@ const RootStack = () => {
 
 export default function App() {
   const [isFirstRun, setIsFirstRun] = useState(null);
-  const [LocationPermission, setLocationPermission] = useState(null);
+  const [locationPermission, setLocationPermission] = useState(null);
+  const [accessCounter, setAccessCounter] = useState(0);
 
   useEffect(() => {
     initializeApp();
   }, []);
 
-  
   const initializeApp = async () => {
     try {
-      console.log('Checking if user is already logged in');
-      const isFirstRun = await AppViewModel.checkFirstRun();
-      setIsFirstRun(isFirstRun);
-      const response = await AppViewModel.checkPermission();
-      setLocationPermission(response);
+      const firstRun = await AppViewModel.checkFirstRun();
+      setIsFirstRun(firstRun);
+      if (firstRun === false) {
+        const location = await AppViewModel.getCurrentPosition();
+        console.log('Location:', location);
+        setLocationPermission(location ? true : false);
+      }
     } catch (error) {
       console.log('Error initializing app:', error);
     }
   }
 
   const handleLocationPermission = (response) => {
-    setLocationPermission(response);
-  }
-
-  if (isFirstRun === null || LocationPermission === null) {
-    return (
-      <SplashScreen />
-    );
+    if (response === false) {
+      setAccessCounter(accessCounter + 1);
+      setLocationPermission(false);
+    } else {
+      setLocationPermission(true);
+    }
   }
   
-  if (!LocationPermission) {
+  if (isFirstRun === false && locationPermission === false) {
     return (
-      <LocationScreen handleLocationPermission={handleLocationPermission}/>
+      <LocationScreen handleLocationPermission={handleLocationPermission} accessCounter={accessCounter} />
+    );
+  }
+
+  if (isFirstRun === false && locationPermission === true) {
+    return (
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
     );
   }
 
   return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <SplashScreen />
   );
 }
-
-
-
-
-
-/*
-oggetto relativo allo stato di navigazione
-const state = {
-  type: 'stack',
-  key: 'stack-1',
-  routeNames: ['Home', 'Profile', 'Settings'],
-  routes: [
-    { key: 'home-1', name: 'Home', params: { sortBy: 'latest' } },
-    { key: 'settings-1', name: 'Settings' },
-  ],
-  index: 1,
-  stale: false,
-};
-*/ 
-
-
