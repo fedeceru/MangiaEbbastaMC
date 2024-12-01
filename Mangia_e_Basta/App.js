@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AppViewModel from './viewmodel/AppViewModel';
 import SplashScreen from './components/initcomponents/SplashScreen';
 import LocationScreen from './components/initcomponents/LocationScreen';
 import { MyAppNavigator } from './AppNavigator';
+import { set } from 'react-hook-form';
 
 export default function App() {
   const [isFirstRun, setIsFirstRun] = useState(null);
   const [locationPermission, setLocationPermission] = useState(null);
   const [accessCounter, setAccessCounter] = useState(0);
+  const [reloadApp, setReloadApp] = useState(false);
 
   useEffect(() => {
     initializeApp();
-  }, []);
+  }, [reloadApp]);
 
   const initializeApp = async () => {
     try {
@@ -28,12 +30,14 @@ export default function App() {
   }
 
   const handleLocationPermission = (response) => {
-    if (response === false) {
+    if (response === true) {
+      setLocationPermission(true);
+      //ricarico l'app per far si che venga calcolata la posizione, solo quando ho i permessi
+      setReloadApp(true);
+    } else {
       setAccessCounter(accessCounter + 1);
       setLocationPermission(false);
-    } else {
-      setLocationPermission(true);
-    }
+    } 
   }
   
   if (isFirstRun === false && locationPermission === false) {

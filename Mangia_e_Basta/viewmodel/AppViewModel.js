@@ -23,7 +23,7 @@ export default class AppViewModel {
                 }
             }
 
-            console.log('User already logged in');
+            console.log('User logged in');
             CommunicationController.setSidAndUid(sid, uid);
             return false;
         } catch (error) {
@@ -36,7 +36,7 @@ export default class AppViewModel {
         try {
             const grantedPermission = await PositionManager.checkLocationPermission();
             if (grantedPermission) {
-                console.log("Permission already granted!");
+                console.log("Permission granted!");
                 return true;
             } else {
                 console.log("Requesting location permission...");
@@ -60,6 +60,19 @@ export default class AppViewModel {
         }
         catch (error) {
             console.log("Error during getCurrentPosition: ", error);
+        }
+    }
+
+    //recupera le informazioni dell'utente, controllando prima se è loggato
+    static async fetchUserInfo() {
+        try {
+            if (CommunicationController.getSidAndUid() === null) {
+                this.checkFirstRun();
+            }
+
+            return await CommunicationController.getUserInfo(); 
+        } catch (error) {
+            console.log("Error during fetchUserInfo: ", error);
         }
     }
 }

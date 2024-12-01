@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native';
 
 const EditProfileScreen = ({ navigation }) => {
+    
 
     return(
         <View>

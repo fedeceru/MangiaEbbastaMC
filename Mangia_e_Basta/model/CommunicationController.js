@@ -8,9 +8,8 @@ export default class CommunicationController {
       this.uid = uid;
     };
 
-    static reSetSidAndUid() {
-      this.sid = null;
-      this.uid = null;
+    static getSidAndUid() {
+      return {sid: this.sid, uid: this.uid};
     };
   
     static async genericRequest(endpoint, verb, queryParams, bodyParams) {
@@ -85,7 +84,7 @@ export default class CommunicationController {
     static async getUserInfo() {
       let endpoint = "user/" + this.uid;
       let queryParams = {sid: this.sid};
-      console.log("getUserInfo called with ebdpoint: " + endpoint + " and queryParams: " + queryParams.sid);
+      console.log("getUserInfo called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
       return await this.genericGetRequest(endpoint, queryParams);
     }
 
