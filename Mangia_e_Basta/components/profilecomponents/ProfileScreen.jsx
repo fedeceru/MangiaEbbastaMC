@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import AppViewModel from '../../viewmodel/AppViewModel';
+import { styles } from '../../Styles';
 
 const ProfileScreen = ({ navigation }) => {
 //in questa schermata mi aspetto di ottenere dal server i dati dell'utente, essa si aggiorna ogni volata che i dati dell'utente cambiano
@@ -28,54 +29,54 @@ const ProfileScreen = ({ navigation }) => {
         setUpToDate(false);
     }
 
-    return(
-        <View style={styles.profileContainer}>
-            <Text style={styles.header}>Profilo</Text>
-            <View style={styles.profileSection}>
-                <Text style={styles.label}>Nome e Cognome</Text>
-                <Text style={styles.value}>{userInfo.firstName} {userInfo.lastName}</Text>
-            </View>
-            
-            <View style={styles.profileSection}>
-                <Text style={styles.label}>Nome sulla Carta di Credito</Text>
-                <Text style={styles.value}>{userInfo.cardName}</Text>
-            </View>
-            
-            <View style={styles.profileSection}>
-                <Text style={styles.label}>Numero Carta di Credito</Text>
-                <Text style={styles.value}>**** **** **** {userInfo.cardNumber}</Text>
-            </View>
-            
-            <View style={styles.profileSection}>
-                <Text style={styles.label}>Data Scadenza Carta</Text>
-                <Text style={styles.value}>{userInfo.cardExpiryMonth}/{userInfo.cardExpiryYear}</Text>
-            </View>
-            
-            <View style={styles.profileSection}>
-                <Text style={styles.label}>Codice Segreto Carta</Text>
-                <TouchableOpacity onPress={togglePinVisibility}>
-                    <Text style={styles.value}>{userInfo.cardPin}</Text>
-                </TouchableOpacity>
-            </View>
-            
-            <View style={styles.profileSection}>
-                <Text style={styles.label}>Ultimo Ordine</Text>
-                <Text style={styles.value}>{userInfo.lastOrder ? userInfo.lastOrder.description : "Nessun ordine effettuato."}</Text>
-                <TouchableOpacity onPress={viewLastOrder}>
-                <Text style={styles.link}>Visualizza Dettagli</Text>
-                </TouchableOpacity>
-            </View>
-            
-            <TouchableOpacity onPress={() => navigation.navigate('EditProfileScreen', updateInfo={updateInfo}, userInfo={userInfo})} style={styles.editButton}>
-                <Text style={styles.editButtonText}>Modifica Profilo</Text>
-            </TouchableOpacity>
-        </View>
-    )
+    /*<View style={styles.profileImageContainer}>
+      <Image source={{ uri: profileImageUri }} style={styles.profileImage} />
+    </View>*/
+
+    return (
+      <ScrollView style={stili.container}>
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>Nome</Text>
+              <Text style={stili.value}>{userInfo.firstName}</Text>
+          </View>
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>Cognome</Text>
+              <Text style={stili.value}>{userInfo.lastName}</Text>
+          </View>
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>Nome sulla carta di credito</Text>
+              <Text style={stili.value}>{userInfo.cardFullName}</Text>
+          </View>          
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>Numero carta di credito</Text>
+              <Text style={stili.value}>{userInfo.cardNumber}</Text>
+          </View>          
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>Data scadenza</Text>
+              <Text style={stili.value}>
+              {userInfo.cardExpireMonth}/{userInfo.cardExpireYear}
+              </Text>
+          </View>      
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>CVV</Text>
+              <Text style={stili.value}>{userInfo.cardCVV}</Text>
+          </View>          
+          <View style={stili.infoContainer}>
+              <Text style={stili.label}>Ultimo ordine</Text>
+              <Text style={stili.value}>{userInfo.lastOid}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('EditProfile', {userInfo}, {upToDate}); }}>
+                  <Text style={styles.buttonText}>Modifica Profilo</Text>
+              </TouchableOpacity>
+          </View>
+      </ScrollView>
+  );
 };
 
 export default ProfileScreen;
 
-const styles = StyleSheet.create({
+const stili = StyleSheet.create({
     profileContainer: {
       padding: 20,
       backgroundColor: "#fff",
