@@ -1,9 +1,9 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, TouchableOpacity, View, Image } from 'react-native';
-import { styles } from '../Styles';
-import AppViewModel from '../viewmodel/AppViewModel';
 import SplashScreen from './SplashScreen';
 import { useEffect, useState } from 'react';
+import { styles } from '../../Styles';
+import AppViewModel from '../../viewmodel/AppViewModel';
 
 const locationDeniedImage = 'https://t3.ftcdn.net/jpg/05/83/96/22/360_F_583962262_5G5ewl75uZWW9KmsIjREuHSo1prjTbOU.jpg';
 

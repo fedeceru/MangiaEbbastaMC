@@ -1,20 +1,8 @@
 import { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LocationScreen from './components/LocationScreen';
-import SplashScreen from './components/SplashScreen';
-import HomeScreen from './components/HomeScreen';
 import AppViewModel from './viewmodel/AppViewModel';
-
-const Stack = createNativeStackNavigator(); 
-
-const RootStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-    </Stack.Navigator>
-  )
-}
+import SplashScreen from './components/initcomponents/SplashScreen';
+import LocationScreen from './components/initcomponents/LocationScreen';
+import { MyAppNavigator } from './AppNavigator';
 
 export default function App() {
   const [isFirstRun, setIsFirstRun] = useState(null);
@@ -56,9 +44,7 @@ export default function App() {
 
   if (isFirstRun === false && locationPermission === true) {
     return (
-      <NavigationContainer>
-        <RootStack />
-      </NavigationContainer>
+      <MyAppNavigator />
     );
   }
 
