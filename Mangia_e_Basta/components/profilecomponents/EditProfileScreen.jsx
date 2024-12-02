@@ -18,8 +18,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         try {
             console.log("Updating user info...");
             await AppViewModel.updateUserInfo(updatedUserInfo);
-            () => handleUpToDate();
-            navigation.goBack();    
+            navigation.navigate('Profile', () => {handleUpToDate()});    
         } catch (error) {
             console.log(error);
         };
@@ -27,56 +26,69 @@ const EditProfileScreen = ({ route, navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.text}>Nome:</Text>
-            <TextInput
-                value={updatedUserInfo.firstName}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('firstName', value)}
-                placeholder="Inserisci il nome"
-            />
-            <Text style={styles.text}>Cognome:</Text>
-            <TextInput
-                value={updatedUserInfo.lastName}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('lastName', value)}
-                placeholder="Inserisci il cognome"
-            />
-            <Text style={styles.text}>cardNumber:</Text>
-            <TextInput
-                value={updatedUserInfo.cardNumber}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('cardNumber', value)}
-                placeholder="Inserisci il cardNumber"
-            />
-            <Text style={styles.text}>cardFullName:</Text>
-            <TextInput
-                value={updatedUserInfo.cardFullName}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('cardFullName', value)}
-                placeholder="Inserisci il cardFullName"
-            />
-            <Text style={styles.text}>cardExpireMonth</Text>
-            <TextInput
-                value={updatedUserInfo.cardExpireMonth ? updatedUserInfo.cardExpireMonth.toString(): ''}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('cardExpireMonth', value)}  
-                placeholder="Inserisci il cardExpireMonth"
-            />
-            <Text style={styles.text}>cardExpireYear</Text>
-            <TextInput
-                value={updatedUserInfo.cardExpireYear ? updatedUserInfo.cardExpireYear.toString(): ''}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('cardExpireYear', value)}
-                placeholder="Inserisci il cardExpireYear"
-            />
-            <Text style={styles.text}>cardCVV</Text>
-            <TextInput
-                value={updatedUserInfo.cardCVV ? updatedUserInfo.cardCVV.toString(): ''}
-                style={styles.infoContainer}
-                onChangeText={(value) => handleChange('cardCVV', value)}
-                placeholder="Inserisci il cardCVV"
-            />
-            
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>Nome:</Text>
+                <TextInput
+                    value={updatedUserInfo.firstName}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('firstName', value)}
+                    placeholder="Inserisci il nome"
+                />
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>Cognome:</Text>
+                <TextInput
+                    value={updatedUserInfo.lastName}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('lastName', value)}
+                    placeholder="Inserisci il cognome"
+                />
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>cardNumber:</Text>
+                <TextInput
+                    value={updatedUserInfo.cardNumber}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('cardNumber', value)}
+                    placeholder="Inserisci il cardNumber"
+                />
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>cardFullName:</Text>
+                <TextInput
+                    value={updatedUserInfo.cardFullName}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('cardFullName', value)}
+                    placeholder="Inserisci il cardFullName"
+                />
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>cardExpireMonth</Text>
+                <TextInput
+                    value={updatedUserInfo.cardExpireMonth ? updatedUserInfo.cardExpireMonth.toString(): ''}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('cardExpireMonth', value)}  
+                    placeholder="Inserisci il cardExpireMonth"
+                />
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>cardExpireYear</Text>
+                <TextInput
+                    value={updatedUserInfo.cardExpireYear ? updatedUserInfo.cardExpireYear.toString(): ''}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('cardExpireYear', value)}
+                    placeholder="Inserisci il cardExpireYear"
+                />
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>cardCVV</Text>
+                <TextInput
+                    value={updatedUserInfo.cardCVV ? updatedUserInfo.cardCVV.toString(): ''}
+                    style={styles.value}
+                    onChangeText={(value) => handleChange('cardCVV', value)}
+                    placeholder="Inserisci il cardCVV"
+                />
+            </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handleSave}>
                     <Text style={styles.buttonText}>Salva modifiche</Text>
