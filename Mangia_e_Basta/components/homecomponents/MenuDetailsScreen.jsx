@@ -1,12 +1,33 @@
-import { View, Text } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView } from 'react-native';
+import { styles } from '../../Styles';
 
-const MenuDetailsScreen = ({ navigation }) => {
+const MenuDetailsScreen = ({ route, navigation }) => {
 
-    return(
-        <View>
-            <Text>Menu Details Screen</Text>
-        </View>
-    )
+    const { menu } = route.params;
+    const [menuDetails, setMenuDetails] = useState(null);
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        
+    }, []);
+
+    return (
+        <SafeAreaView>
+            <View>
+                <Text style={styles.title}>{menuDetails.name}</Text>
+                <Text>{menuDetails.shortDescription}</Text>
+                <Text>{menuDetails.deliveryTime}</Text>
+                <Text>{menuDetails.price}</Text>
+                <Text>{menuDetails.longDescription}</Text>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Acquista</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
+    );
+
 };
 
 export default MenuDetailsScreen;

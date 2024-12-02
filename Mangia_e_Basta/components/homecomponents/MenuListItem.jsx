@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native';
+import { Text, View, TouchableOpacity } from "react-native";
+import { styles } from "../../Styles";
 
-const MenuListItem = () => {
-
-    return(
-        <View>
-            <Text>Menu List Item Screen</Text>
+export default MenuListItem = ({ menu, handleShowDetails }) => { 
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>{menu.name}</Text>
+            <Image source={{ uri: "data:image/jpeg;base64," + menu.image }} style={styles.image} />
+            <Text style={styles.text}>{menu.price}</Text>
+            <Text style={styles.text}>{menu.shortDescription}</Text>
+            <Text style={styles.text}>{menu.deliveryTime}</Text>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => handleShowDetails(menu)}>
+                    <Text style={styles.buttonText}>Dettagli</Text>
+                </TouchableOpacity>
+            </View>
         </View>
-    )
+    );
 };
-
-export default MenuListItem;

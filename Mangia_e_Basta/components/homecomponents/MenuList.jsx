@@ -1,12 +1,20 @@
-import { View, Text } from 'react-native';
+import { View, FlatList } from "react-native";
+import { styles } from "../../Styles";
+import MenuListItem from "./MenuListItem";
 
-const MenuList = () => {
-
-    return(
-        <View>
-            <Text>Menu List</Text>
-        </View>
-    )
+export default MenuList = ({ menuList, handleShowDetails }) => {
+    return (
+        <FlatList
+            style={styles.list}
+            data={menuList}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            renderItem={({ item }) => (
+                <MenuListItem
+                    menu={item}
+                    handleShowDetails={handleShowDetails}
+                />
+            )}
+            keyExtractor={(_, index) => index.toString()}
+        />
+    );
 };
-
-export default MenuList;

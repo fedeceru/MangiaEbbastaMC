@@ -8,7 +8,6 @@ export default class PositionManager {
         try {
             const grantedPermission = await Location.getForegroundPermissionsAsync();
             if (grantedPermission.status === "granted") { 
-                console.log("Permission already granted!"); 
                 this.permissionStatus = true;
             } 
             return this.permissionStatus;

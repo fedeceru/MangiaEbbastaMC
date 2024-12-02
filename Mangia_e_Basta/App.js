@@ -3,10 +3,13 @@ import AppViewModel from './viewmodel/AppViewModel';
 import SplashScreen from './components/initcomponents/SplashScreen';
 import LocationScreen from './components/initcomponents/LocationScreen';
 import { MyAppNavigator } from './AppNavigator';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [isFirstRun, setIsFirstRun] = useState(null);
   const [locationPermission, setLocationPermission] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  
   const [accessCounter, setAccessCounter] = useState(0);
   const [reloadApp, setReloadApp] = useState(false);
 
@@ -14,14 +17,23 @@ export default function App() {
     initializeApp();
   }, [reloadApp]);
 
+  //controllo che sia la firstrun, se l'utente ha dato i permessi per accedere alla posizione provando a calcolarla e se il db è stato inizializzato correttamente
   const initializeApp = async () => {
-    try {
+    try { 
       const firstRun = await AppViewModel.checkFirstRun();
       setIsFirstRun(firstRun);
       if (firstRun === false) {
         const location = await AppViewModel.getCurrentPosition();
-        console.log('Location:', location);
-        setLocationPermission(location ? true : false);
+        if (location) {
+          console.log("permission granted");
+          setLocationPermission(true);
+          const openDB = await AppViewModel.initDB();
+          if (openDB) {
+            setIsOpen(true);
+          }
+        } else {
+          setLocationPermission(false);
+        }
       }
     } catch (error) {
       console.log('Error initializing app:', error);
@@ -31,7 +43,6 @@ export default function App() {
   const handleLocationPermission = (response) => {
     if (response === true) {
       setLocationPermission(true);
-      //ricarico l'app per far si che venga calcolata la posizione, solo quando ho i permessi
       setReloadApp(true);
     } else {
       setAccessCounter(accessCounter + 1);
@@ -45,9 +56,12 @@ export default function App() {
     );
   }
 
-  if (isFirstRun === false && locationPermission === true) {
+  if (isFirstRun === false && locationPermission === true && isOpen === true) {
     return (
-      <MyAppNavigator />
+      <>
+        <MyAppNavigator />
+        <StatusBar style="auto" />
+      </>
     );
   }
 

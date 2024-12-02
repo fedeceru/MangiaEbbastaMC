@@ -1,15 +1,63 @@
-import { View, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native';
+import MenuList from './MenuList';
+import { useIsFocused } from '@react-navigation/native';
+import { styles } from '../../Styles';
+import AppViewModel from '../../viewmodel/AppViewModel';
+import LoadingScreen from '../initcomponents/LoadingScreen';
 
 const HomeScreen = ({ navigation }) => {
-    //nell homeScreen sarà presente la lista dei menu disponibili nelle vicinanze, di sonseguenza devo disporre 
-    //della posizione dell'utente, del sid dell'utente   
+    const [currentPosition, setCurrentPosition] = useState(null);
+    const [menuList, setMenuList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const isFocused = useIsFocused();
 
+    useEffect(() => {
+        if (isFocused) {
+            const fetchMenuList = async () => {
+                try {
+                    console.log("getting current position...");
+                    const location = await AppViewModel.getCurrentPosition();
+                    setCurrentPosition(location);
+                    if (location) {
+                        console.log("fetching menu list...");
+                        const menuData = await AppViewModel.fetchMenuList();
+                        console.log("fetching menu images...");
+                        const updatedMenuData = [];
+                        for (const menu of menuData) {
+                            const image = await AppViewModel.fetchMenuImage(menu.mid);
+                            updatedMenuData.push({ ...menu, image: image });
+                        }
+                        setMenuList(menuData);
+                        setIsLoading(false);
+                    } 
+                } catch (error) {
+                    console.log(error);
+                }
+            }
 
-    return(
-        <View>
-            <Text>Home Screen</Text>
-        </View>
-    )
+            fetchMenuList();
+        }
+    }, [isFocused]);
+
+    const handleShowDetails = (menu) => {
+        navigation.navigate('MenuDetails', { menu: menu }); 
+    }
+
+    if (isLoading) {
+        return (
+           <LoadingScreen /> 
+        );
+    }
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <MenuList
+                menuList={menuList}
+                handleShowDetails={handleShowDetails}
+            />
+        </SafeAreaView>
+    );
 };
 
 export default HomeScreen;

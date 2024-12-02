@@ -98,14 +98,14 @@ export default class CommunicationController {
       return await this.genericPutRequest(endpoint, {}, bodyParams);
     }
 
-    static async getMenuByPosition(lat, lng) {
+    static async getMenuList(lat, lng) {
       let endpoint = "menu";
       let queryParams = {
         lat: lat,
         lng: lng,
         sid: this.sid,
       };
-      console.log("getMenuByPosition called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
+      console.log("getMenuList called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
       return await this.genericGetRequest(endpoint, queryParams, {});
     }
 
@@ -123,7 +123,7 @@ export default class CommunicationController {
     static async getMenuImage(mid) {
       let endpoint = "menu/" + mid + "/image";
       let queryParams = {sid: this.sid};
-      console.log("getMenuImage called with ebdpoint: " + endpoint + " and queryParams: " + queryParams.sid);
+      console.log("getMenuImage called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
       return await this.genericGetRequest(endpoint, queryParams, {});
     }
 }

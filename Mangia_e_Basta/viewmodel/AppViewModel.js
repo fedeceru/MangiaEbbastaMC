@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CommunicationController from "../model/CommunicationController";
 import PositionManager from "../model/PositionManager";
+import StorageManager from "../model/StorageManager";
 
 export default class AppViewModel {
+    static storageManager = null;
 
     //controlla se l'utente è già loggato
     static async checkFirstRun() {
@@ -31,8 +33,20 @@ export default class AppViewModel {
         }
     }
 
+    //inizializza il database e ritorna true se è stato inizializzato correttamente
     static async initDB() {
-        
+        try {
+            const storageManager = new StorageManager();
+            await storageManager.openDB();
+            this.storageManager = storageManager;
+            if (storageManager.db) {
+                console.log('DB initialized');
+                return true;
+            } 
+            return false;
+        } catch (error) {
+            console.log('Error during initDB: ', error);
+        }
     }
 
     //controlla se l'app ha i permessi per accedere alla posizione
@@ -85,5 +99,32 @@ export default class AppViewModel {
         }
     }
 
+    //recupera i menu nelle vicinanze
+    static async fetchMenuList() {
+        try {
+            const location = PositionManager.currentLocation; 
+            return await CommunicationController.getMenuList(location.coords.latitude, location.coords.longitude);
+        } catch (error) {
+            console.log("Error during fetchMenuList: ", error);
+        }
+    }
 
+    //recupero l'immagine del menu dal DB o dal server se non presente o se non è aggiornata
+    static async fetchMenuImage(mid) {
+        try {
+            const menuFromDB = await this.storageManager.getImageFromDB(mid);
+            const location = PositionManager.currentLocation;
+            const menuFromServer = await CommunicationController.getMenuDetails(mid, location.coords.latitude, location.coords.longitude);
+
+            if (!menuFromDB || menuFromServer.imageVersion > menuFromDB.imageVersion)  {
+                const image = await CommunicationController.getMenuImage(mid);
+                await this.storageManager.saveMenuPic(mid, menuFromServer.imageVersion, image.base64);
+                return image.base64;
+            }
+
+            return menuFromDB.base64;
+        } catch (error) {
+            console.log("Error during fetchMenuImage: ", error);
+        }
+    }
 }
