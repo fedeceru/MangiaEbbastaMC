@@ -94,7 +94,7 @@ export default class CommunicationController {
         ...userInfo,
         sid: this.sid,
       };
-      console.log("getUserInfo called with ebdpoint: " + endpoint + " and bodyParams: " + JSON.stringify(bodyParams));
+      console.log("putUserInfo called with ebdpoint: " + endpoint + " and bodyParams: " + JSON.stringify(bodyParams));
       return await this.genericPutRequest(endpoint, {}, bodyParams);
     }
 

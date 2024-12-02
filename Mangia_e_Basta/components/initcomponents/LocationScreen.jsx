@@ -19,13 +19,12 @@ const LocationScreen = ({ handleLocationPermission, accessCounter }) => {
 
     const tryGetPermission = async () => {
         try {
-            const response = await AppViewModel.getLocationPermission();
             setIsLoading(true);
+            const response = await AppViewModel.getLocationPermission();
+            setIsLoading(false);
             if (response === true) {
-                setIsLoading(false);
                 handleLocationPermission(response);
             } else {
-                setIsLoading(false);
                 handleLocationPermission(response);
             }
         } catch (error) {

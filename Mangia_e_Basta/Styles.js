@@ -1,119 +1,94 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+
+const colors = {
+  primary: '#3498DB',
+  secondary: '#2980B9',
+  background: '#f5f5f5',
+  text: '#333',
+  buttonText: '#fff',
+  border: '#ddd',
+};
 
 export const styles = StyleSheet.create({
-    list: {
-        width: "100%",
-    },
-    separator: {
-        height: 2,
-        width: "100%",
-        backgroundColor: "lightgray",
-        marginVertical: 5,
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5', 
-    },
-    splashImage: {
-        width: '100%',
-        height: 250,
-        resizeMode: 'cover',
-        marginBottom: 20,
-    },
-    image: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        resizeMode: 'cover',
-        marginBottom: 20,
-    },
-    profileImageContainer: {
-        alignItems: 'center',
-        marginBottom: 16,
-        padding: 10,
-    },
-    profileImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        borderWidth: 2,
-        borderColor: '#E0E0E0',
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.07,
-        shadowRadius: 8,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: '15',
-        textAlign: 'center',
-    },
-    infoContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 16,
-        paddingHorizontal: 20,
-    },
-    label: {
-        fontSize: 12,
-        color: '#B0B0B0',
-        fontWeight: '400',
-        textTransform: 'uppercase',
-        letterSpacing: 1,
-    },
-    value: {
-        fontSize: 14,
-        color: '#333',
-        fontWeight: '500',
-        flex: 1,
-        textAlign: 'right',
-        paddingLeft: 10,
-    },
-    buttonContainer: {
-        marginTop: 30,
-        alignItems: 'center',
-        paddingHorizontal: 20,
-    },
-    button: {
-        backgroundColor: '#1A73E8',
-        paddingVertical: 14,
-        paddingHorizontal: 32,
-        borderRadius: 50,
-        width: '100%',
-        maxWidth: 220,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.08,
-        shadowRadius: 12,
-    },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#FFF',
-        textTransform: 'uppercase',
-    },
-    iconContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 50,
-        height: 50,
-        backgroundColor: '#FFF',
-        borderRadius: 25,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-    },
-    icon: {
-        width: 30,
-        height: 30,
-    },
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    padding: 20,
+  },
+  safeAreaContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: colors.text,
+  },
+  text: {
+    fontSize: 16,
+    color: colors.text,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: colors.primary,
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: colors.buttonText,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  infoContainer: {
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    paddingBottom: 10,
+  },
+  label: {
+    fontSize: 14,
+    color: colors.secondary,
+    marginBottom: 5,
+  },
+  value: {
+    fontSize: 16,
+    color: colors.text,
+  },
+  profileImageContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
+  loader: {
+    color: colors.primary,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+  },
+  loadingText: {
+    fontSize: 18,
+    color: colors.text,
+    marginTop: 10,
+  },
+});
+
