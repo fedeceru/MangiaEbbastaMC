@@ -4,7 +4,7 @@ import { styles } from "../../Styles";
 import AppViewModel from "../../viewmodel/AppViewModel";
 
 const EditProfileScreen = ({ route, navigation }) => {
-    const { userInfo, handleUpToDate } = route.params;
+    const { userInfo } = route.params;
     const [updatedUserInfo, setUpdatedUserInfo] = useState({...userInfo});   
 
     const handleChange = (field, value) => {
@@ -18,7 +18,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         try {
             console.log("Updating user info...");
             await AppViewModel.updateUserInfo(updatedUserInfo);
-            navigation.navigate('Profile', () => {handleUpToDate()});    
+            navigation.goBack();    
         } catch (error) {
             console.log(error);
         };

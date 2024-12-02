@@ -3,31 +3,30 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator
 import AppViewModel from '../../viewmodel/AppViewModel';
 import { styles } from '../../Styles';
 import LoadingScreen from "../initcomponents/LoadingScreen";
+import { useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = ({ navigation }) => {
     const [userInfo, setUserInfo] = useState([]);
-    const [upToDate, setUpToDate] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                console.log("Fetching user info...");
-                const userData = await AppViewModel.fetchUserInfo();
-                console.log("User info fetched:", userData);
-                setUserInfo(userData);
-                setIsLoading(false);
-            } catch (error) {
-                console.error("Error fetching user info:", error);
+        if (isFocused) {
+            const fetchUserInfo = async () => {
+                try {
+                    console.log("Fetching user info...");
+                    const userData = await AppViewModel.fetchUserInfo();
+                    console.log("User info fetched:", userData);
+                    setUserInfo(userData);
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error("Error fetching user info:", error);
+                }
             }
+    
+            fetchUserInfo();    
         }
-
-        fetchUserInfo();
-    }, [upToDate]);
-
-    const handleUpToDate = () => {
-      setUpToDate(false);
-    }
+    }, [isFocused]);
 
     if (isLoading) {
       return (
@@ -68,7 +67,7 @@ const ProfileScreen = ({ navigation }) => {
               <Text style={styles.value}>{userInfo.lastOid}</Text>
           </View>
           <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('EditProfile', {userInfo}, {handleUpToDate}); }}>
+              <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('EditProfile', {userInfo}); }}>
                   <Text style={styles.buttonText}>Modifica Profilo</Text>
               </TouchableOpacity>
           </View>
