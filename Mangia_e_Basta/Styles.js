@@ -65,11 +65,6 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
   },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-  },
   image: {
     width: 200,
     height: 200,

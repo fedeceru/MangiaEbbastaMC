@@ -31,6 +31,10 @@ export default class AppViewModel {
         }
     }
 
+    static async initDB() {
+        
+    }
+
     //controlla se l'app ha i permessi per accedere alla posizione
     static async getLocationPermission() {
         try {
@@ -63,19 +67,16 @@ export default class AppViewModel {
         }
     }
 
-    //recupera le informazioni dell'utente, controllando prima se è loggato
+    //recupera le informazioni dell'utente
     static async fetchUserInfo() {
         try {
-            if (CommunicationController.getSidAndUid() === null) {
-                this.checkFirstRun();
-            }
-
             return await CommunicationController.getUserInfo(); 
         } catch (error) {
             console.log("Error during fetchUserInfo: ", error);
         }
     }
 
+    //aggiorna le informazioni dell'utente
     static async updateUserInfo(updatedUSerInfo) {
         try {
             return await CommunicationController.putUserInfo(updatedUSerInfo);
@@ -83,4 +84,6 @@ export default class AppViewModel {
             console.log("Error during updateUserInfo: ", error);
         }
     }
+
+
 }

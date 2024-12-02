@@ -16,7 +16,6 @@ const ProfileScreen = ({ navigation }) => {
                 try {
                     console.log("Fetching user info...");
                     const userData = await AppViewModel.fetchUserInfo();
-                    console.log("User info fetched:", userData);
                     setUserInfo(userData);
                     setIsLoading(false);
                 } catch (error) {

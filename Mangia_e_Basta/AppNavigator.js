@@ -13,8 +13,8 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} options={{ headerShown: false }}/>
         </Stack.Navigator>
     );
 };
@@ -22,8 +22,8 @@ const HomeStack = () => {
 const ProfileStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }}/>
         </Stack.Navigator>
     );
 };
@@ -35,9 +35,9 @@ const TabNavigator = () => {
                 headerShown: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
-                    if (route.name === "HomeTab") {
+                    if (route.name === "Home") {
                         iconName = focused ? "home" : "home-outline";
-                    } else if (route.name === "ProfileTab") {
+                    } else if (route.name === "Profile") {
                         iconName = focused ? "person" : "person-outline";
                     }
                     return <Icon name={iconName} size={size} color={color} />;
@@ -46,8 +46,8 @@ const TabNavigator = () => {
                 tabBarInactiveTintColor: "gray",
             })}
         >
-            <Tab.Screen name="HomeTab" component={HomeStack} />
-            <Tab.Screen name="ProfileTab" component={ProfileStack} />
+            <Tab.Screen name="Home" component={HomeStack} />
+            <Tab.Screen name="Profile" component={ProfileStack} />
         </Tab.Navigator>
     );
 };
