@@ -75,4 +75,12 @@ export default class AppViewModel {
             console.log("Error during fetchUserInfo: ", error);
         }
     }
+
+    static async updateUserInfo(updatedUSerInfo) {
+        try {
+            return await CommunicationController.putUserInfo(updatedUSerInfo);
+        } catch (error) {
+            console.log("Error during updateUserInfo: ", error);
+        }
+    }
 }

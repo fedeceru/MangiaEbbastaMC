@@ -23,7 +23,7 @@ const ProfileStack = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Profile" component={ProfileScreen} />
-            <Stack.Screen name="EditPofile" component={EditProfileScreen} />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
         </Stack.Navigator>
     );
 };
