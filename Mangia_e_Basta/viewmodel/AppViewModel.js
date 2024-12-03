@@ -4,7 +4,7 @@ import PositionManager from "../model/PositionManager";
 import StorageManager from "../model/StorageManager";
 
 export default class AppViewModel {
-    static storageManager = null;
+    static storageManager;
 
     //controlla se l'utente è già loggato
     static async checkFirstRun() {
@@ -39,7 +39,7 @@ export default class AppViewModel {
             const storageManager = new StorageManager();
             await storageManager.openDB();
             this.storageManager = storageManager;
-            if (storageManager.db) {
+            if (this.storageManager.db) {
                 console.log('DB initialized');
                 return true;
             } 
@@ -112,16 +112,22 @@ export default class AppViewModel {
     //recupero l'immagine del menu dal DB o dal server se non presente o se non è aggiornata
     static async fetchMenuImage(mid) {
         try {
-            const menuFromDB = await this.storageManager.getImageFromDB(mid);
+            if (!this.storageManager) {
+                console.log("StorageManager not initialized");
+                return;
+            }
+            const menuFromDB = await this.storageManager.getMenuFromDB(mid);
             const location = PositionManager.currentLocation;
             const menuFromServer = await CommunicationController.getMenuDetails(mid, location.coords.latitude, location.coords.longitude);
 
             if (!menuFromDB || menuFromServer.imageVersion > menuFromDB.imageVersion)  {
+                console.log("image missing or outdated, fetching from server...");
                 const image = await CommunicationController.getMenuImage(mid);
                 await this.storageManager.saveMenuPic(mid, menuFromServer.imageVersion, image.base64);
                 return image.base64;
             }
 
+            console.log("image found and up to date, fetching from DB...");
             return menuFromDB.base64;
         } catch (error) {
             console.log("Error during fetchMenuImage: ", error);

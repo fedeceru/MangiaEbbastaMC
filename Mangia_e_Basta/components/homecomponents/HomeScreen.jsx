@@ -23,12 +23,16 @@ const HomeScreen = ({ navigation }) => {
                         console.log("fetching menu list...");
                         const menuData = await AppViewModel.fetchMenuList();
                         console.log("fetching menu images...");
-                        const updatedMenuData = [];
+                        let updatedMenuList = [];
                         for (const menu of menuData) {
-                            const image = await AppViewModel.fetchMenuImage(menu.mid);
-                            updatedMenuData.push({ ...menu, image: image });
+                            try {
+                                const image = await AppViewModel.fetchMenuImage(menu.mid);
+                                updatedMenuList.push({ ...menu, image: image });
+                            } catch (error) {
+                                console.log(error);
+                            }
                         }
-                        setMenuList(menuData);
+                        setMenuList(updatedMenuList);
                         setIsLoading(false);
                     } 
                 } catch (error) {

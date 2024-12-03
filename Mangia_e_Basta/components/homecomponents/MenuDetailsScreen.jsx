@@ -4,7 +4,7 @@ import { View, Text, SafeAreaView } from 'react-native';
 import { styles } from '../../Styles';
 
 const MenuDetailsScreen = ({ route, navigation }) => {
-
+    //faccio la chiamata per i dettagli del menu e prendo l'immagine dal DB se è già presente 
     const { menu } = route.params;
     const [menuDetails, setMenuDetails] = useState(null);
     const isFocused = useIsFocused();

@@ -18,19 +18,19 @@ export default class StorageManager {
     
     async saveMenuPic(mid, imageVersion, base64) {
         try {
-            const query = "UPDATE Menu SET imageVersion = ?, base64 = ? WHERE mid = ?;";
-            await this.db.runAsync(query, [imageVersion, base64, mid]);
+            const query = "INSERT OR REPLACE INTO Menu (mid, imageVersion, base64) VALUES (?, ?, ?);";
+            await this.db.runAsync(query, [mid, imageVersion, base64]);
         } catch (error) {
             console.log('Error during saveMenuPic: ', error);
             throw error;
         }
     }    
     
-    async getImageFromDB(mid) {
+    async getMenuFromDB(mid) {
         try {
             const query = "SELECT * FROM Menu WHERE mid = ?;";
             const result = await this.db.getFirstAsync(query, [mid]);
-             return result;    
+            return result;    
         } catch (error) {
             console.log('Error during getMenuFromDB: ', error);
             throw error;
