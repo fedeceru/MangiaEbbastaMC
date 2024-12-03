@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import AppViewModel from '../../viewmodel/AppViewModel';
 import { styles } from '../../Styles';
-import LoadingScreen from "../initcomponents/LoadingScreen";
+import LoadingScreen from "../LoadingScreen";
 import { useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = ({ navigation }) => {
@@ -34,44 +34,39 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     return (
-      <ScrollView style={styles.container}>
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>Nome</Text>
-              <Text style={styles.value}>{userInfo.firstName}</Text>
-          </View>
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>Cognome</Text>
-              <Text style={styles.value}>{userInfo.lastName}</Text>
-          </View>
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>Nome sulla carta di credito</Text>
-              <Text style={styles.value}>{userInfo.cardFullName}</Text>
-          </View>          
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>Numero carta di credito</Text>
-              <Text style={styles.value}>{userInfo.cardNumber}</Text>
-          </View>          
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>Data scadenza</Text>
-              <Text style={styles.value}>
-              {userInfo.cardExpireMonth}/{userInfo.cardExpireYear}
-              </Text>
-          </View>      
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>CVV</Text>
-              <Text style={styles.value}>{userInfo.cardCVV}</Text>
-          </View>          
-          <View style={styles.infoContainer}>
-              <Text style={styles.label}>Ultimo ordine</Text>
-              <Text style={styles.value}>{userInfo.lastOid}</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('EditProfile', {userInfo}); }}>
-                  <Text style={styles.buttonText}>Modifica Profilo</Text>
-              </TouchableOpacity>
-          </View>
-      </ScrollView>
-  );
+        <ScrollView style={styles.container}>
+            <View style={styles.profileCard}>
+                <Image
+                    source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' }}
+                    style={styles.profileImage}
+                />
+                <Text style={styles.profileName}>{`${userInfo.firstName} ${userInfo.lastName}`}</Text>
+                <Text style={styles.profileInfo}>{userInfo.cardFullName}</Text>
+                <Text style={styles.profileInfo}>Last Order: {userInfo.lastOid}</Text>
+            </View>
+            
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>Numero carta di credito</Text>
+                <Text style={styles.value}>{userInfo.cardNumber}</Text>
+            </View>          
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>Data scadenza</Text>
+                <Text style={styles.value}>
+                {userInfo.cardExpireMonth}/{userInfo.cardExpireYear}
+                </Text>
+            </View>      
+            <View style={styles.infoContainer}>
+                <Text style={styles.label}>CVV</Text>
+                <Text style={styles.value}>{userInfo.cardCVV}</Text>
+            </View>          
+            
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('EditProfile', {userInfo}); }}>
+                    <Text style={styles.buttonText}>Modifica Profilo</Text>
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
+    );
 };
 
 export default ProfileScreen;

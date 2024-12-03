@@ -6,6 +6,7 @@ import HomeScreen from "./components/homecomponents/HomeScreen";
 import ProfileScreen from "./components/profilecomponents/ProfileScreen";
 import MenuDetailsScreen from "./components/homecomponents/MenuDetailsScreen";
 import EditProfileScreen from "./components/profilecomponents/EditProfileScreen";
+import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,6 +29,14 @@ const ProfileStack = () => {
     );
 };
 
+const OrderStack = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="OrderStatus" component={OrderStatusScreen} />
+        </Stack.Navigator>
+    );
+};
+
 const TabNavigator = () => {
     return (
         <Tab.Navigator
@@ -39,6 +48,8 @@ const TabNavigator = () => {
                         iconName = focused ? "home" : "home-outline";
                     } else if (route.name === "ProfileTab") {
                         iconName = focused ? "person" : "person-outline";
+                    } else if (route.name === "OrderTab") {
+                        iconName = focused ? "cart" : "cart-outline";
                     }
                     return <Icon name={iconName} size={size} color={color} />;
                 },
@@ -48,6 +59,7 @@ const TabNavigator = () => {
         >
             <Tab.Screen name="HomeTab" component={HomeStack} />
             <Tab.Screen name="ProfileTab" component={ProfileStack} />
+            <Tab.Screen name="OrderTab" component={OrderStack} />
         </Tab.Navigator>
     );
 };

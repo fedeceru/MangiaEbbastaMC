@@ -1,5 +1,5 @@
 import { View, Text, ActivityIndicator } from "react-native";
-import { styles } from "../../Styles";
+import { styles } from "../Styles";
 
 const LoadingScreen = () => {
     return (

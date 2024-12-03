@@ -7,6 +7,11 @@ const colors = {
   text: '#333',
   buttonText: '#fff',
   border: '#ddd',
+  cardBackground: '#fff',
+  inputBackground: '#fff',
+  tabBar: '#fff',
+  tabBarInactive: '#95a5a6',
+  tabBarActive: '#3498DB',
 };
 
 export const styles = StyleSheet.create({
@@ -38,7 +43,7 @@ export const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 8,
     alignItems: 'center',
   },
   buttonText: {
@@ -66,9 +71,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 200,
+    width: '100%',
     height: 200,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
+    borderRadius: 8,
     marginBottom: 20,
   },
   loader: {
@@ -84,6 +90,87 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.text,
     marginTop: 10,
+  },
+
+  //styles for card layout
+  card: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 10,
+  },
+  cardText: {
+    fontSize: 14,
+    color: colors.text,
+    marginBottom: 8,
+  },
+  list: {
+    flex: 1,
+  },
+  separator: {
+    height: 16,
+  },
+
+  //styles for input fields
+  input: {
+    backgroundColor: colors.inputBackground,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    color: colors.text,
+    marginBottom: 15,
+  },
+  inputLabel: {
+    fontSize: 14,
+    color: colors.secondary,
+    marginBottom: 6,
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+
+  //styles for profile card
+  profileCard: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    alignItems: 'center',
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 16,
+  },
+  profileName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 8,
+  },
+  profileInfo: {
+    fontSize: 16,
+    color: colors.secondary,
+    marginBottom: 4,
   },
 });
 

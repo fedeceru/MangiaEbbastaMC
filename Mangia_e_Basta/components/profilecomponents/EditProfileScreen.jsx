@@ -26,67 +26,71 @@ const EditProfileScreen = ({ route, navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>Nome:</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>Nome:</Text>
                 <TextInput
                     value={updatedUserInfo.firstName}
-                    style={styles.value}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('firstName', value)}
                     placeholder="Inserisci il nome"
                 />
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>Cognome:</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>Cognome:</Text>
                 <TextInput
                     value={updatedUserInfo.lastName}
-                    style={styles.value}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('lastName', value)}
                     placeholder="Inserisci il cognome"
                 />
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>cardNumber:</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>Numero carta di credito:</Text>
                 <TextInput
                     value={updatedUserInfo.cardNumber}
-                    style={styles.value}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('cardNumber', value)}
-                    placeholder="Inserisci il cardNumber"
+                    placeholder="Inserisci il numero della carta"
+                    keyboardType="numeric"
                 />
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>cardFullName:</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>Nome sulla carta di credito:</Text>
                 <TextInput
                     value={updatedUserInfo.cardFullName}
-                    style={styles.value}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('cardFullName', value)}
-                    placeholder="Inserisci il cardFullName"
+                    placeholder="Inserisci il nome sulla carta"
                 />
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>cardExpireMonth</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>Mese di scadenza:</Text>
                 <TextInput
-                    value={updatedUserInfo.cardExpireMonth ? updatedUserInfo.cardExpireMonth.toString(): ''}
-                    style={styles.value}
+                    value={updatedUserInfo.cardExpireMonth ? updatedUserInfo.cardExpireMonth.toString() : ''}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('cardExpireMonth', value)}  
-                    placeholder="Inserisci il cardExpireMonth"
+                    placeholder="MM"
+                    keyboardType="numeric"
                 />
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>cardExpireYear</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>Anno di scadenza:</Text>
                 <TextInput
-                    value={updatedUserInfo.cardExpireYear ? updatedUserInfo.cardExpireYear.toString(): ''}
-                    style={styles.value}
+                    value={updatedUserInfo.cardExpireYear ? updatedUserInfo.cardExpireYear.toString() : ''}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('cardExpireYear', value)}
-                    placeholder="Inserisci il cardExpireYear"
+                    placeholder="YYYY"
+                    keyboardType="numeric"
                 />
             </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.label}>cardCVV</Text>
+            <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>CVV:</Text>
                 <TextInput
-                    value={updatedUserInfo.cardCVV ? updatedUserInfo.cardCVV.toString(): ''}
-                    style={styles.value}
+                    value={updatedUserInfo.cardCVV ? updatedUserInfo.cardCVV.toString() : ''}
+                    style={styles.input}
                     onChangeText={(value) => handleChange('cardCVV', value)}
-                    placeholder="Inserisci il cardCVV"
+                    placeholder="Inserisci il CVV"
+                    keyboardType="numeric"
                 />
             </View>
             <View style={styles.buttonContainer}>

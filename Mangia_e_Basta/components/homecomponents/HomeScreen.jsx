@@ -4,10 +4,10 @@ import MenuList from './MenuList';
 import { useIsFocused } from '@react-navigation/native';
 import { styles } from '../../Styles';
 import AppViewModel from '../../viewmodel/AppViewModel';
-import LoadingScreen from '../initcomponents/LoadingScreen';
+import LoadingScreen from '../LoadingScreen';
 
 const HomeScreen = ({ navigation }) => {
-    const [currentPosition, setCurrentPosition] = useState(null);
+    const [currentPosition, setCurrentPosition] = useState(null); 
     const [menuList, setMenuList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
                         let updatedMenuList = [];
                         for (const menu of menuData) {
                             try {
-                                const image = await AppViewModel.fetchMenuImage(menu.mid);
+                                const image = await AppViewModel.fetchMenuImage(menu);
                                 updatedMenuList.push({ ...menu, image: image });
                             } catch (error) {
                                 console.log(error);

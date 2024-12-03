@@ -1,30 +1,52 @@
-import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { styles } from '../../Styles';
+import AppViewModel from '../../viewmodel/AppViewModel';
+import LoadingScreen from '../LoadingScreen';
 
 const MenuDetailsScreen = ({ route, navigation }) => {
-    //faccio la chiamata per i dettagli del menu e prendo l'immagine dal DB se è già presente 
     const { menu } = route.params;
     const [menuDetails, setMenuDetails] = useState(null);
-    const isFocused = useIsFocused();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        
+        const fetchMenuDetails = async () => {
+            try {
+                console.log("fetching menu details...");
+                const menuDetailsData = await AppViewModel.fetchMenuDetails(menu.mid);
+                if (menuDetailsData) {
+                    setMenuDetails({ ...menuDetailsData, image: menu.image });
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchMenuDetails();
     }, []);
 
+    if (isLoading) {
+        return (
+            <LoadingScreen />
+        );
+    }
+
     return (
-        <SafeAreaView>
-            <View>
-                <Text style={styles.title}>{menuDetails.name}</Text>
-                <Text>{menuDetails.shortDescription}</Text>
-                <Text>{menuDetails.deliveryTime}</Text>
-                <Text>{menuDetails.price}</Text>
-                <Text>{menuDetails.longDescription}</Text>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Acquista</Text>
-                </TouchableOpacity>
-            </View>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
+                <Image source={{ uri: "data:image/jpeg;base64," + menuDetails.image }} style={styles.image} />
+                <View style={styles.card}>
+                    <Text style={styles.title}>{menuDetails.name}</Text>
+                    <Text style={styles.text}>{menuDetails.shortDescription}</Text>
+                    <Text style={styles.text}>Tempo di consegna: {menuDetails.deliveryTime}</Text>
+                    <Text style={styles.text}>Prezzo: {menuDetails.price}€</Text>
+                    <Text style={styles.text}>{menuDetails.longDescription}</Text>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Acquista</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 

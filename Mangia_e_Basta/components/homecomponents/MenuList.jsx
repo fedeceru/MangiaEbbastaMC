@@ -1,4 +1,4 @@
-import { View, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { styles } from "../../Styles";
 import MenuListItem from "./MenuListItem";
 
@@ -7,14 +7,14 @@ export default MenuList = ({ menuList, handleShowDetails }) => {
         <FlatList
             style={styles.list}
             data={menuList}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
             renderItem={({ item }) => (
                 <MenuListItem
                     menu={item}
                     handleShowDetails={handleShowDetails}
                 />
             )}
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(item) => item.mid.toString()}
+            contentContainerStyle={{ padding: 16 }}
         />
     );
 };

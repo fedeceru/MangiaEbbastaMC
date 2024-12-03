@@ -5,6 +5,7 @@ import StorageManager from "../model/StorageManager";
 
 export default class AppViewModel {
     static storageManager;
+    static currentLocation;
 
     //controlla se l'utente è già loggato
     static async checkFirstRun() {
@@ -13,7 +14,7 @@ export default class AppViewModel {
             const uid = JSON.parse(await AsyncStorage.getItem('uid'));
     
             if (!sid || !uid) {
-                console.log('User not logged in');
+                console.log('user not logged in');
                 const userData = await CommunicationController.postUser();
                 if (userData && userData.sid && userData.uid) {
                     console.log('New user registered');
@@ -25,7 +26,7 @@ export default class AppViewModel {
                 }
             }
 
-            console.log('User logged in');
+            console.log('user logged in');
             CommunicationController.setSidAndUid(sid, uid);
             return false;
         } catch (error) {
@@ -54,10 +55,10 @@ export default class AppViewModel {
         try {
             const grantedPermission = await PositionManager.checkLocationPermission();
             if (grantedPermission) {
-                console.log("Permission granted!");
+                console.log("permission granted!");
                 return true;
             } else {
-                console.log("Requesting location permission...");
+                console.log("requesting location permission...");
                 const permissionGranted = await PositionManager.requestLocationPermission();
                 return permissionGranted;
             }
@@ -72,8 +73,9 @@ export default class AppViewModel {
         try {
             if (await PositionManager.checkLocationPermission()) {
                 const location = await PositionManager.getCurrentPosition();
+                this.currentLocation = location;
                 return location;
-            }
+            } 
             return null;
         }
         catch (error) {
@@ -102,28 +104,45 @@ export default class AppViewModel {
     //recupera i menu nelle vicinanze
     static async fetchMenuList() {
         try {
-            const location = PositionManager.currentLocation; 
-            return await CommunicationController.getMenuList(location.coords.latitude, location.coords.longitude);
+            if (!this.currentLocation) {
+                console.log("currentLocation not initialized");
+                return;
+            }
+            return await CommunicationController.getMenuList(this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
         } catch (error) {
             console.log("Error during fetchMenuList: ", error);
         }
     }
 
+    //recupera i dettagli di un menu
+    static async fetchMenuDetails(mid) {
+        try {
+            if (!this.currentLocation) {
+                console.log("currentLocation not initialized");
+                return;
+            }
+            return await CommunicationController.getMenuDetails(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
+        } catch (error) {
+            console.log("Error during fetchMenuDetails: ", error);
+        }
+    }
+
     //recupero l'immagine del menu dal DB o dal server se non presente o se non è aggiornata
-    static async fetchMenuImage(mid) {
+    static async fetchMenuImage(menu) {
         try {
             if (!this.storageManager) {
                 console.log("StorageManager not initialized");
                 return;
+            } else if (!this.currentLocation) {
+                console.log("currentLocation not initialized");
+                return;
             }
-            const menuFromDB = await this.storageManager.getMenuFromDB(mid);
-            const location = PositionManager.currentLocation;
-            const menuFromServer = await CommunicationController.getMenuDetails(mid, location.coords.latitude, location.coords.longitude);
+            const menuFromDB = await this.storageManager.getMenuFromDB(menu.mid);
 
-            if (!menuFromDB || menuFromServer.imageVersion > menuFromDB.imageVersion)  {
+            if (!menuFromDB || menu.imageVersion > menuFromDB.imageVersion)  {
                 console.log("image missing or outdated, fetching from server...");
-                const image = await CommunicationController.getMenuImage(mid);
-                await this.storageManager.saveMenuPic(mid, menuFromServer.imageVersion, image.base64);
+                const image = await CommunicationController.getMenuImage(menu.mid);
+                await this.storageManager.saveMenuPic(menu.mid, menu.imageVersion, image.base64);
                 return image.base64;
             }
 

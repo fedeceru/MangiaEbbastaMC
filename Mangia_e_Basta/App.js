@@ -17,7 +17,6 @@ export default function App() {
     initializeApp();
   }, [reloadApp]);
 
-  //controllo che sia la firstrun, se l'utente ha dato i permessi per accedere alla posizione provando a calcolarla e se il db è stato inizializzato correttamente
   const initializeApp = async () => {
     try { 
       const firstRun = await AppViewModel.checkFirstRun();
