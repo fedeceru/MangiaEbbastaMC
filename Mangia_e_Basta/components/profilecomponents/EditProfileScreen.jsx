@@ -8,6 +8,16 @@ const EditProfileScreen = ({ route, navigation }) => {
     const [updatedUserInfo, setUpdatedUserInfo] = useState({...userInfo});   
 
     const handleChange = (field, value) => {
+        if (field === 'cardExpireYear' && value.length ) {    
+            return;
+        } else if (field === 'cardExpireMonth' && value > 12 && value.toString() < 1 && value.toString().length > 2) {
+            return;
+        } else if (field === 'cardNumber' && value.length != 16) {
+            return;
+        } else if (field === 'cardFullName' && value.split(' ').length > 2) {
+            return;
+        } 
+
         setUpdatedUserInfo({
             ...updatedUserInfo,
             [field]: value,
