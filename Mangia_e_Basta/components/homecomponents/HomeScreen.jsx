@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import MenuList from './MenuList';
 import { useIsFocused } from '@react-navigation/native';
 import { styles } from '../../Styles';
@@ -55,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={localStyles.container}>
             <MenuList
                 menuList={menuList}
                 handleShowDetails={handleShowDetails}
@@ -63,5 +63,13 @@ const HomeScreen = ({ navigation }) => {
         </SafeAreaView>
     );
 };
+
+const localStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f8f8f8',
+        padding: 10,
+    },
+});
 
 export default HomeScreen;

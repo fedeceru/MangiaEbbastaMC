@@ -8,6 +8,8 @@ import MenuDetailsScreen from "./components/homecomponents/MenuDetailsScreen";
 import EditProfileScreen from "./components/profilecomponents/EditProfileScreen";
 import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
 import DeliveryStatusScreen from "./components/profilecomponents/DeliveryStatusScreen";
+import { KeyboardAvoidingView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -15,7 +17,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
             <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} />
         </Stack.Navigator>
     );
@@ -24,7 +26,7 @@ const HomeStack = () => {
 const ProfileStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
             <Stack.Screen name="DeliveryStatus" component={DeliveryStatusScreen} />
         </Stack.Navigator>
@@ -57,6 +59,7 @@ const TabNavigator = () => {
                 },
                 tabBarActiveTintColor: "#2C3E50",
                 tabBarInactiveTintColor: "gray",
+                headerShown: false,
             })}
         >
             <Tab.Screen name="HomeTab" component={HomeStack} />
@@ -69,7 +72,11 @@ const TabNavigator = () => {
 export const MyAppNavigator = () => {
     return (
         <NavigationContainer>
-            <TabNavigator />
+            <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+                <SafeAreaView style={{ flex: 1 }}>
+                    <TabNavigator />
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         </NavigationContainer>
     );
 };

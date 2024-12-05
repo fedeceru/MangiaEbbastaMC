@@ -1,34 +1,36 @@
-import { SafeAreaView, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import React from 'react';
+import { SafeAreaView, Text, Image, StyleSheet } from 'react-native';
 
-const SplashScreen = () => { 
+const SplashScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Caricamento...</Text>
-      <ActivityIndicator 
-        size="large" 
-        color={styles.loader.color} 
-        accessibilityLabel="Caricamento in corso"
+    <SafeAreaView style={localStyles.splashContainer}>
+      <Image 
+        source={{ uri: 'https://cdn-icons-png.flaticon.com/128/8095/8095039.png' }} 
+        style={localStyles.splashIcon} 
       />
+      <Text style={localStyles.title}>MANGIA E BASTA</Text>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
+export default SplashScreen;
+
+const localStyles = StyleSheet.create({
+  splashContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5', 
+    backgroundColor: '#F0F8FF', 
+  },
+  splashIcon: {
+    width: 120,
+    height: 120,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: 'bold',
-    marginBottom: 20,
     color: '#333', 
-  },
-  loader: {
-    color: '#0000ff', 
+    marginBottom: 20,
   },
 });
-
-export default SplashScreen;

@@ -1,11 +1,11 @@
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { styles } from "../../Styles";
 import MenuListItem from "./MenuListItem";
 
 export default MenuList = ({ menuList, handleShowDetails }) => {
     return (
         <FlatList
-            style={styles.list}
+            style={localStyles.list}
             data={menuList}
             renderItem={({ item }) => (
                 <MenuListItem
@@ -18,3 +18,11 @@ export default MenuList = ({ menuList, handleShowDetails }) => {
         />
     );
 };
+
+const localStyles = StyleSheet.create({
+    list: {
+        flex: 1,
+    },
+});
+
+
