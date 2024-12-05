@@ -17,8 +17,10 @@ const colors = {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
-    padding: 20,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   safeAreaContainer: {
     flex: 1,
@@ -29,8 +31,9 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: colors.text,
+    color: '#333',
+    marginBottom: 10,
+    textAlign: 'center',
   },
   text: {
     fontSize: 16,
@@ -41,14 +44,19 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: colors.primary,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
+    backgroundColor: '#007BFF',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   buttonText: {
-    color: colors.buttonText,
-    fontSize: 18,
+    fontSize: 16,
+    color: '#fff',
     fontWeight: 'bold',
   },
   infoContainer: {
@@ -71,10 +79,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    borderRadius: 8,
+    width: 150,
+    height: 150,
     marginBottom: 20,
   },
   loader: {
@@ -90,6 +96,18 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.text,
     marginTop: 10,
+  },
+  description: {
+    fontSize: 16,
+    color: '#555',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  instructions: {
+    fontSize: 14,
+    color: '#777',
+    textAlign: 'center',
+    lineHeight: 20,
   },
 
   //styles for card layout
@@ -121,6 +139,7 @@ export const styles = StyleSheet.create({
   separator: {
     height: 16,
   },
+  
 
   //styles for input fields
   input: {
@@ -144,33 +163,95 @@ export const styles = StyleSheet.create({
 
   //styles for profile card
   profileCard: {
-    backgroundColor: colors.cardBackground,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    flexDirection: 'row',
     alignItems: 'center',
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 16,
-  },
-  profileName: {
-    fontSize: 24,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 15,
+    marginTop: 20,
+    marginHorizontal: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    marginBottom: 20,
+},
+profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 15,
+},
+profileName: {
+    fontSize: 18,
     fontWeight: 'bold',
-    color: colors.text,
-    marginBottom: 8,
-  },
-  profileInfo: {
+    color: '#333',
+},
+cardContainer: {
+    marginTop: 30,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    marginHorizontal: 16,
+},
+cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+},
+cardDetails: {
+    backgroundColor: '#f1f1f1',
+    borderRadius: 8,
+    padding: 15,
+},
+cardFullName: {
     fontSize: 16,
-    color: colors.secondary,
-    marginBottom: 4,
-  },
+    fontWeight: 'bold',
+    marginBottom: 10,
+},
+cardNumber: {
+    fontSize: 18,
+    letterSpacing: 2,
+    marginBottom: 10,
+},
+cardExpiryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+},
+cardExpiry: {
+    fontSize: 16,
+},
+cardCVV: {
+    fontSize: 16,
+},
+navigationContainer: {
+    marginTop: 20,
+    paddingHorizontal: 16,
+},
+navigationButton: {
+    backgroundColor: '#000', 
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+},
+buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+},
+icon: {
+    marginRight: 10,
+},
+navigationButtonText: {
+    color: '#fff', 
+    fontSize: 16,
+    textAlign: 'center',
+},
+
 });
 
