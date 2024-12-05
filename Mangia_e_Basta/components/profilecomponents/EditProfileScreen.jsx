@@ -14,7 +14,6 @@ const EditProfileScreen = ({ route, navigation }) => {
             [field]: value,
         });
 
-        // Rimuovi l'errore se il campo viene modificato
         setErrors((prevErrors) => ({
             ...prevErrors,
             [field]: undefined,
@@ -53,12 +52,12 @@ const EditProfileScreen = ({ route, navigation }) => {
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; // Ritorna true se non ci sono errori
+        return Object.keys(newErrors).length === 0; 
     };
 
     const handleSave = async () => {
         if (!validateFields()) {
-            return; // Blocca il salvataggio se ci sono errori
+            return; 
         }
 
         try {
@@ -88,7 +87,7 @@ const EditProfileScreen = ({ route, navigation }) => {
                 <Text style={styles.inputLabel}>Cognome:</Text>
                 <TextInput
                     value={updatedUserInfo.lastName}
-                    style={[styles.input, errors.lastName && localStyles.inputError]} //se esiste un errore associato al campo cambia lo stile
+                    style={[styles.input, errors.lastName && localStyles.inputError]} 
                     onChangeText={(value) => handleChange("lastName", value)}
                     placeholder="Inserisci il cognome"
                 />

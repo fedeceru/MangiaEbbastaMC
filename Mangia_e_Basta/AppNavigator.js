@@ -7,6 +7,7 @@ import ProfileScreen from "./components/profilecomponents/ProfileScreen";
 import MenuDetailsScreen from "./components/homecomponents/MenuDetailsScreen";
 import EditProfileScreen from "./components/profilecomponents/EditProfileScreen";
 import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
+import DeliveryStatusScreen from "./components/profilecomponents/DeliveryStatusScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,7 @@ const ProfileStack = () => {
         <Stack.Navigator>
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="DeliveryStatus" component={DeliveryStatusScreen} />
         </Stack.Navigator>
     );
 };
