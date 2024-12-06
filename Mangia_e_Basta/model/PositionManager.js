@@ -1,7 +1,6 @@
 import * as Location from 'expo-location';
 
 export default class PositionManager {
-    static currentLocation; 
     static permissionStatus = false;
 
     static async checkLocationPermission() {
@@ -33,9 +32,7 @@ export default class PositionManager {
     static async getCurrentPosition() {
         try {
             if (this.permissionStatus === true) {
-                const location = await Location.getCurrentPositionAsync();
-                this.currentLocation = location;
-                return this.currentLocation;
+                return await Location.getCurrentPositionAsync();
             }
             this.checkLocationPermission();
             return;    

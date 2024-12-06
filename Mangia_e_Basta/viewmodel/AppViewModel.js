@@ -127,6 +127,26 @@ export default class AppViewModel {
         }
     }
 
+    //acquisto di un menu, solo se il profilo utente è completo e non ci sono errori in corso
+    static async buyMenu(mid) {
+        try {
+            if (!this.currentLocation) {
+                console.log("currentLocation not initialized");
+                return;
+            }
+            if (!await this.checkFirstRun()) {
+                const userInfo = await this.fetchUserInfo();
+                if (!(userInfo && userInfo.firstName && userInfo.lastName && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) || userInfo.orderStatus === "ON_DELIVERY") {
+                    return;
+                } 
+                return await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
+            }
+            return;
+        } catch (error) {
+            console.log("Error during buyMenu: ", error);
+        }
+    }
+
     //recupero l'immagine del menu dal DB o dal server se non presente o se non è aggiornata
     static async fetchMenuImage(menu) {
         try {

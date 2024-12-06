@@ -26,6 +26,16 @@ const MenuDetailsScreen = ({ route, navigation }) => {
         fetchMenuDetails();
     }, []);
 
+    const handleBuyMenu = async () => {
+        try {
+            let result = await AppViewModel.buyMenu(menu.mid);
+            console.log(result);
+            navigation.goBack();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     if (isLoading) {
         return (
             <LoadingScreen />
@@ -42,7 +52,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                     <Text style={styles.detailsText}>Tempo di consegna: {menuDetails.deliveryTime}</Text>
                     <Text style={styles.detailsText}>Prezzo: {menuDetails.price}€</Text>
                     <Text style={styles.detailsText}>{menuDetails.longDescription}</Text>
-                    <TouchableOpacity style={styles.detailsButton}>
+                    <TouchableOpacity style={styles.detailsButton} onPress={handleBuyMenu}>
                         <Text style={styles.detailsButtonText}>Acquista</Text>
                     </TouchableOpacity>
                 </View>

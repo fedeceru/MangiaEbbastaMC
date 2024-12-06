@@ -59,33 +59,18 @@ export default class CommunicationController {
         throw errorObject;
       }
     }
-  
-    static async genericGetRequest(endpoint, queryParams) {
-      console.log("genericGetRequest called");
-      return await this.genericRequest(endpoint, "GET", queryParams, {});
-    }
-  
-    static async genericPutRequest(endpoint, queryParams, bodyParams) {
-      console.log("genericPutRequest called");
-      return await this.genericRequest(endpoint, "PUT", queryParams, bodyParams);
-    }
-
-    static async genericPostRequest(endpoint) {
-      console.log("genericPostRequest called");
-      return await this.genericRequest(endpoint, "POST", {}, {});
-    }
 
     static async postUser() {
       let endpoint = "user";
       console.log("postUser called with ebdpoint: " + endpoint);
-      return await this.genericPostRequest(endpoint);
+      return await this.genericRequest(endpoint, "POST", {}, {});
     }
 
     static async getUserInfo() {
       let endpoint = "user/" + this.uid;
       let queryParams = {sid: this.sid};
       console.log("getUserInfo called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
-      return await this.genericGetRequest(endpoint, queryParams);
+      return await this.genericRequest(endpoint, "GET", queryParams, {});
     }
 
     static async putUserInfo(userInfo) {
@@ -95,7 +80,7 @@ export default class CommunicationController {
         sid: this.sid,
       };
       console.log("putUserInfo called with ebdpoint: " + endpoint + " and bodyParams: " + JSON.stringify(bodyParams));
-      return await this.genericPutRequest(endpoint, {}, bodyParams);
+      return await this.genericRequest(endpoint, "PUT", {}, bodyParams);
     }
 
     static async getMenuList(lat, lng) {
@@ -106,7 +91,7 @@ export default class CommunicationController {
         sid: this.sid,
       };
       console.log("getMenuList called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
-      return await this.genericGetRequest(endpoint, queryParams, {});
+      return await this.genericRequest(endpoint, "GET", queryParams, {});
     }
 
     static async getMenuDetails(mid, lat, lng) {
@@ -117,13 +102,26 @@ export default class CommunicationController {
         sid: this.sid,
       };
       console.log("getMenuDetails called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
-      return await this.genericGetRequest(endpoint, queryParams, {});
+      return await this.genericRequest(endpoint, "GET", queryParams, {});
     }
 
     static async getMenuImage(mid) {
       let endpoint = "menu/" + mid + "/image";
       let queryParams = {sid: this.sid};
       console.log("getMenuImage called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
-      return await this.genericGetRequest(endpoint, queryParams, {});
+      return await this.genericRequest(endpoint, "GET", queryParams, {});
+    }
+
+    static async buyMenu(mid, lat, lng) {
+      let endpoint = "menu/" + mid + "/buy";
+      let bodyParams = {
+        sid: this.sid,
+        deliveryLocation: {
+          lat: lat,
+          lng: lng,
+        },
+      }
+      console.log("buyMenu called with ebdpoint: " + endpoint + " and bodyParams: " + JSON.stringify(bodyParams));
+      return await this.genericRequest(endpoint, "POST", {}, bodyParams);
     }
 }
