@@ -10,6 +10,7 @@ import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
 import DeliveryStatusScreen from "./components/profilecomponents/DeliveryStatusScreen";
 import { KeyboardAvoidingView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,11 +73,10 @@ const TabNavigator = () => {
 export const MyAppNavigator = () => {
     return (
         <NavigationContainer>
-            <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-                <SafeAreaView style={{ flex: 1 }}>
-                    <TabNavigator />
-                </SafeAreaView>
-            </KeyboardAvoidingView>
+            <SafeAreaView style={{ flex: 1 }}>
+                <StatusBar />
+                <TabNavigator />
+            </SafeAreaView>
         </NavigationContainer>
     );
 };

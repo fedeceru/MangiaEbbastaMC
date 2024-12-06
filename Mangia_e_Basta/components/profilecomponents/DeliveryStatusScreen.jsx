@@ -2,12 +2,27 @@ import { View, Text } from "react-native";
 
 
 const DeliveryStatusScreen = ({ route, navigation }) => {
-    console.log("DeliveryStatusScreen route:", route);
+    const { lastOid, orderStatus } = route.params;
+
+    
+    /*
+    if (orderStatus === 'ON_DELIVERY') {
+        return (
+
+        );
+    }
+
+    if (lastOid && orderStatus === 'COMPLETED') {
+        return (
+
+        );
+    }
+
     return (
         <View>
-            <Text>Delivery Status Screen</Text>
+            <Text>Non hai ancora fatto alcun ordine</Text>
         </View>
-    )
+    )*/
 }
 
 export default DeliveryStatusScreen;

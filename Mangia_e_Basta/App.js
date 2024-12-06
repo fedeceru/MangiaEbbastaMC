@@ -57,10 +57,7 @@ export default function App() {
 
   if (isFirstRun === false && locationPermission === true && isOpen === true) {
     return (
-      <>
-        <MyAppNavigator />
-        <StatusBar style="auto" />
-      </>
+      <MyAppNavigator />
     );
   }
 

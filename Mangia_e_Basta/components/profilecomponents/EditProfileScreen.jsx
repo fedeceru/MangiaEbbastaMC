@@ -70,154 +70,102 @@ const EditProfileScreen = ({ route, navigation }) => {
     };
 
     return (
-        <ScrollView style={localStyles.scrollViewContainer}>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>Nome:</Text>
+        <ScrollView style={localStyles.editScrollViewContainer}>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>Nome:</Text>
                 <TextInput
                     value={updatedUserInfo.firstName}
-                    style={[localStyles.input, errors.firstName && localStyles.inputError]}
+                    style={[localStyles.editInput, errors.firstName && localStyles.editInputError]}
                     onChangeText={(value) => handleChange("firstName", value)}
                     placeholder="Inserisci il nome"
                 />
                 {errors.firstName && (
-                    <Text style={localStyles.errorText}>{errors.firstName}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.firstName}</Text>
                 )}
             </View>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>Cognome:</Text>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>Cognome:</Text>
                 <TextInput
                     value={updatedUserInfo.lastName}
-                    style={[localStyles.input, errors.lastName && localStyles.inputError]} 
+                    style={[localStyles.editInput, errors.lastName && localStyles.editInputError]} 
                     onChangeText={(value) => handleChange("lastName", value)}
                     placeholder="Inserisci il cognome"
                 />
                 {errors.lastName && (
-                    <Text style={localStyles.errorText}>{errors.lastName}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.lastName}</Text>
                 )}
             </View>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>Numero carta di credito:</Text>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>Numero carta di credito:</Text>
                 <TextInput
                     value={updatedUserInfo.cardNumber}
-                    style={[localStyles.input, errors.cardNumber && localStyles.inputError]}
+                    style={[localStyles.editInput, errors.cardNumber && localStyles.editInputError]}
                     onChangeText={(value) => handleChange("cardNumber", value)}
                     placeholder="Inserisci il numero della carta"
                     keyboardType="numeric"
                 />
                 {errors.cardNumber && (
-                    <Text style={localStyles.errorText}>{errors.cardNumber}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.cardNumber}</Text>
                 )}
             </View>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>Nome sulla carta di credito:</Text>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>Nome sulla carta di credito:</Text>
                 <TextInput
                     value={updatedUserInfo.cardFullName}
-                    style={[localStyles.input, errors.cardFullName && localStyles.inputError]}
+                    style={[localStyles.editInput, errors.cardFullName && localStyles.editInputError]}
                     onChangeText={(value) => handleChange("cardFullName", value)}
                     placeholder="Inserisci il nome sulla carta"
                 />
                 {errors.cardFullName && (
-                    <Text style={localStyles.errorText}>{errors.cardFullName}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.cardFullName}</Text>
                 )}
             </View>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>Mese di scadenza:</Text>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>Mese di scadenza:</Text>
                 <TextInput
                     value={updatedUserInfo.cardExpireMonth ? updatedUserInfo.cardExpireMonth.toString() : ""}
-                    style={[localStyles.input, errors.cardExpireMonth && localStyles.inputError]}
+                    style={[localStyles.editInput, errors.cardExpireMonth && localStyles.editInputError]}
                     onChangeText={(value) => handleChange("cardExpireMonth", value)}
                     placeholder="MM"
                     keyboardType="numeric"
                 />
                 {errors.cardExpireMonth && (
-                    <Text style={localStyles.errorText}>{errors.cardExpireMonth}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.cardExpireMonth}</Text>
                 )}
             </View>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>Anno di scadenza:</Text>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>Anno di scadenza:</Text>
                 <TextInput
                     value={updatedUserInfo.cardExpireYear ? updatedUserInfo.cardExpireYear.toString() : ""}
-                    style={[localStyles.input, errors.cardExpireYear && localStyles.inputError]}
+                    style={[localStyles.editInput, errors.cardExpireYear && localStyles.editInputError]}
                     onChangeText={(value) => handleChange("cardExpireYear", value)}
                     placeholder="YYYY"
                     keyboardType="numeric"
                 />
                 {errors.cardExpireYear && (
-                    <Text style={localStyles.errorText}>{errors.cardExpireYear}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.cardExpireYear}</Text>
                 )}
             </View>
-            <View style={localStyles.inputContainer}>
-                <Text style={localStyles.inputLabel}>CVV:</Text>
+            <View style={localStyles.editInputContainer}>
+                <Text style={localStyles.editInputLabel}>CVV:</Text>
                 <TextInput
                     value={updatedUserInfo.cardCVV ? updatedUserInfo.cardCVV.toString() : ""}
-                    style={[localStyles.input, errors.cardCVV && localStyles.inputError]}
+                    style={[localStyles.editInput, errors.cardCVV && localStyles.editInputError]}
                     onChangeText={(value) => handleChange("cardCVV", value)}
                     placeholder="Inserisci il CVV"
                     keyboardType="numeric"
                 />
                 {errors.cardCVV && (
-                    <Text style={localStyles.errorText}>{errors.cardCVV}</Text>
+                    <Text style={localStyles.editErrorText}>{errors.cardCVV}</Text>
                 )}
             </View>
-            <View style={localStyles.buttonContainer}>
-                <TouchableOpacity style={localStyles.button} onPress={handleSave}>
-                    <Text style={localStyles.buttonText}>Salva modifiche</Text>
+            <View style={localStyles.editButtonContainer}>
+                <TouchableOpacity style={localStyles.editButton} onPress={handleSave}>
+                    <Text style={localStyles.editButtonText}>Salva modifiche</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
     );
 };
-
-const localStyles = StyleSheet.create({
-    scrollViewContainer: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        padding: 20,
-      },
-      inputContainer: {
-        marginBottom: 20,
-      },
-      inputLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#000000',
-        marginBottom: 8,
-      },
-      input: {
-        backgroundColor: '#F5F5F5',
-        color: '#000000',
-        borderRadius: 8,
-        paddingHorizontal: 12,
-        paddingVertical: 10,
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: '#D1D1D1',
-      },
-      inputError: {
-        borderColor: '#FF5C5C',
-      },
-      errorText: {
-        fontSize: 14,
-        color: '#FF5C5C',
-        marginTop: 5,
-      },
-      buttonContainer: {
-        marginTop: 20,
-        alignItems: 'center',
-      },
-      button: {
-        backgroundColor: '#FF5C5C',
-        paddingVertical: 12,
-        paddingHorizontal: 30,
-        borderRadius: 8,
-        width: '100%',
-        alignItems: 'center',
-      },
-      buttonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: '600',
-      },
-  });
 
 export default EditProfileScreen;
