@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity, View, Text, TextInput, StyleSheet } from "react-native";
+import { ScrollView, TouchableOpacity, View, Text, TextInput } from "react-native";
 import { useState } from "react";
 import AppViewModel from "../../viewmodel/AppViewModel";
 import { styles } from "../../Styles"; 
@@ -70,98 +70,98 @@ const EditProfileScreen = ({ route, navigation }) => {
     };
 
     return (
-        <ScrollView style={localStyles.editScrollViewContainer}>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>Nome:</Text>
+        <ScrollView style={styles.editScrollViewContainer}>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>Nome:</Text>
                 <TextInput
                     value={updatedUserInfo.firstName}
-                    style={[localStyles.editInput, errors.firstName && localStyles.editInputError]}
+                    style={[styles.editInput, errors.firstName && styles.editInputError]}
                     onChangeText={(value) => handleChange("firstName", value)}
                     placeholder="Inserisci il nome"
                 />
                 {errors.firstName && (
-                    <Text style={localStyles.editErrorText}>{errors.firstName}</Text>
+                    <Text style={styles.editErrorText}>{errors.firstName}</Text>
                 )}
             </View>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>Cognome:</Text>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>Cognome:</Text>
                 <TextInput
                     value={updatedUserInfo.lastName}
-                    style={[localStyles.editInput, errors.lastName && localStyles.editInputError]} 
+                    style={[styles.editInput, errors.lastName && styles.editInputError]} 
                     onChangeText={(value) => handleChange("lastName", value)}
                     placeholder="Inserisci il cognome"
                 />
                 {errors.lastName && (
-                    <Text style={localStyles.editErrorText}>{errors.lastName}</Text>
+                    <Text style={styles.editErrorText}>{errors.lastName}</Text>
                 )}
             </View>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>Numero carta di credito:</Text>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>Numero carta di credito:</Text>
                 <TextInput
                     value={updatedUserInfo.cardNumber}
-                    style={[localStyles.editInput, errors.cardNumber && localStyles.editInputError]}
+                    style={[styles.editInput, errors.cardNumber && styles.editInputError]}
                     onChangeText={(value) => handleChange("cardNumber", value)}
                     placeholder="Inserisci il numero della carta"
                     keyboardType="numeric"
                 />
                 {errors.cardNumber && (
-                    <Text style={localStyles.editErrorText}>{errors.cardNumber}</Text>
+                    <Text style={styles.editErrorText}>{errors.cardNumber}</Text>
                 )}
             </View>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>Nome sulla carta di credito:</Text>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>Nome sulla carta di credito:</Text>
                 <TextInput
                     value={updatedUserInfo.cardFullName}
-                    style={[localStyles.editInput, errors.cardFullName && localStyles.editInputError]}
+                    style={[styles.editInput, errors.cardFullName && styles.editInputError]}
                     onChangeText={(value) => handleChange("cardFullName", value)}
                     placeholder="Inserisci il nome sulla carta"
                 />
                 {errors.cardFullName && (
-                    <Text style={localStyles.editErrorText}>{errors.cardFullName}</Text>
+                    <Text style={styles.editErrorText}>{errors.cardFullName}</Text>
                 )}
             </View>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>Mese di scadenza:</Text>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>Mese di scadenza:</Text>
                 <TextInput
                     value={updatedUserInfo.cardExpireMonth ? updatedUserInfo.cardExpireMonth.toString() : ""}
-                    style={[localStyles.editInput, errors.cardExpireMonth && localStyles.editInputError]}
+                    style={[styles.editInput, errors.cardExpireMonth && styles.editInputError]}
                     onChangeText={(value) => handleChange("cardExpireMonth", value)}
                     placeholder="MM"
                     keyboardType="numeric"
                 />
                 {errors.cardExpireMonth && (
-                    <Text style={localStyles.editErrorText}>{errors.cardExpireMonth}</Text>
+                    <Text style={styles.editErrorText}>{errors.cardExpireMonth}</Text>
                 )}
             </View>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>Anno di scadenza:</Text>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>Anno di scadenza:</Text>
                 <TextInput
                     value={updatedUserInfo.cardExpireYear ? updatedUserInfo.cardExpireYear.toString() : ""}
-                    style={[localStyles.editInput, errors.cardExpireYear && localStyles.editInputError]}
+                    style={[styles.editInput, errors.cardExpireYear && styles.editInputError]}
                     onChangeText={(value) => handleChange("cardExpireYear", value)}
                     placeholder="YYYY"
                     keyboardType="numeric"
                 />
                 {errors.cardExpireYear && (
-                    <Text style={localStyles.editErrorText}>{errors.cardExpireYear}</Text>
+                    <Text style={styles.editErrorText}>{errors.cardExpireYear}</Text>
                 )}
             </View>
-            <View style={localStyles.editInputContainer}>
-                <Text style={localStyles.editInputLabel}>CVV:</Text>
+            <View style={styles.editInputContainer}>
+                <Text style={styles.editInputLabel}>CVV:</Text>
                 <TextInput
                     value={updatedUserInfo.cardCVV ? updatedUserInfo.cardCVV.toString() : ""}
-                    style={[localStyles.editInput, errors.cardCVV && localStyles.editInputError]}
+                    style={[styles.editInput, errors.cardCVV && styles.editInputError]}
                     onChangeText={(value) => handleChange("cardCVV", value)}
                     placeholder="Inserisci il CVV"
                     keyboardType="numeric"
                 />
                 {errors.cardCVV && (
-                    <Text style={localStyles.editErrorText}>{errors.cardCVV}</Text>
+                    <Text style={styles.editErrorText}>{errors.cardCVV}</Text>
                 )}
             </View>
-            <View style={localStyles.editButtonContainer}>
-                <TouchableOpacity style={localStyles.editButton} onPress={handleSave}>
-                    <Text style={localStyles.editButtonText}>Salva modifiche</Text>
+            <View style={styles.editButtonContainer}>
+                <TouchableOpacity style={styles.editButton} onPress={handleSave}>
+                    <Text style={styles.editButtonText}>Salva modifiche</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>

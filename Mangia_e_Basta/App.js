@@ -3,7 +3,6 @@ import AppViewModel from './viewmodel/AppViewModel';
 import SplashScreen from './components/initcomponents/SplashScreen';
 import LocationScreen from './components/initcomponents/LocationScreen';
 import { MyAppNavigator } from './AppNavigator';
-import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [isFirstRun, setIsFirstRun] = useState(null);
