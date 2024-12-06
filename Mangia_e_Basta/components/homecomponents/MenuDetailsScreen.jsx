@@ -30,6 +30,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
         try {
             let result = await AppViewModel.buyMenu(menu.mid);
             console.log(result);
+            //creo schermata per checkout 
             navigation.goBack();
         } catch (error) {
             console.log(error);
