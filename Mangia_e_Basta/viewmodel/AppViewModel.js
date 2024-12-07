@@ -135,7 +135,8 @@ export default class AppViewModel {
             const userInfo = await this.fetchUserInfo();
             if (userInfo && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) {
                 isProfileComplete = true;
-            } else if (userInfo.orderStatus === "ON_DELIVERY") {
+            }  
+            if (userInfo.orderStatus === "ON_DELIVERY") {
                 isOrderInProgress = true;
             }
             return { isProfileComplete, isOrderInProgress };
@@ -144,15 +145,10 @@ export default class AppViewModel {
         }
     }
 
-    //acquisto di un menu, solo se il profilo utente è completo e non ci sono ordini in corso
+    //acquisto di un menu
     static async buyMenu(mid) {
         try {
-            const canUserPlaceOrder = await this.canUserPlaceOrder();
-            if (!this.currentLocation || !canUserPlaceOrder.isProfileComplete || canUserPlaceOrder.isOrderInProgress) { 
-                console.log("currentLocation not initialized or user can't place order");
-                return;
-            }
-            return await CommunicationController.postOrder(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
+            return await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
         } catch (error) {
             console.log("Error during buyMenu: ", error);
         }

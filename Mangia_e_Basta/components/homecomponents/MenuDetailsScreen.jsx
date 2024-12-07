@@ -29,6 +29,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
     const handleCanPlaceOrder = async () => {
         try {
             const canUserPlaceOrder = await AppViewModel.canUserPlaceOrder();
+            console.log("canUserPlaceOrder:", canUserPlaceOrder);
 
             if (!canUserPlaceOrder.isProfileComplete) {
                 const reason = "non hai inserito i dati della carta di credito, pocedi alla schermata di modifica profilo per completare l'acquisto"; 
@@ -37,7 +38,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
 
                 Alert.alert(
                     "Impossibile Procedere",
-                    `Non puoi completare l'acquisto perché: ${reason}`,
+                    `Non puoi completare l'acquisto perché ${reason}`,
                     [
                         {
                             text: "Annulla",
@@ -60,7 +61,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                 
                 Alert.alert(
                     "Impossibile Procedere",
-                    `Non puoi completare l'acquisto perché: ${reason}`,
+                    `Non puoi completare l'acquisto perché ${reason}`,
                     [
                         {
                             text: "Annulla",
