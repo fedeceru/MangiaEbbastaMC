@@ -127,21 +127,32 @@ export default class AppViewModel {
         }
     }
 
-    //acquisto di un menu, solo se il profilo utente è completo e non ci sono errori in corso
+    //controlla che il profilo sia completo e che non ci siano ordini in corso per permettere l'acquisto di un menu
+    static async canUserPlaceOrder() {
+        let isProfileComplete = false;
+        let isOrderInProgress = false;
+        try {
+            const userInfo = await this.fetchUserInfo();
+            if (userInfo && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) {
+                isProfileComplete = true;
+            } else if (userInfo.orderStatus === "ON_DELIVERY") {
+                isOrderInProgress = true;
+            }
+            return { isProfileComplete, isOrderInProgress };
+        } catch (error) {
+            console.log("Error during checkProdileCompleteness: ", error);
+        }
+    }
+
+    //acquisto di un menu, solo se il profilo utente è completo e non ci sono ordini in corso
     static async buyMenu(mid) {
         try {
-            if (!this.currentLocation) {
-                console.log("currentLocation not initialized");
+            const canUserPlaceOrder = await this.canUserPlaceOrder();
+            if (!this.currentLocation || !canUserPlaceOrder.isProfileComplete || canUserPlaceOrder.isOrderInProgress) { 
+                console.log("currentLocation not initialized or user can't place order");
                 return;
             }
-            if (!await this.checkFirstRun()) {
-                const userInfo = await this.fetchUserInfo();
-                if (!(userInfo && userInfo.firstName && userInfo.lastName && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) || userInfo.orderStatus === "ON_DELIVERY") {
-                    return;
-                } 
-                return await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
-            }
-            return;
+            return await CommunicationController.postOrder(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
         } catch (error) {
             console.log("Error during buyMenu: ", error);
         }

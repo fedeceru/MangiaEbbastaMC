@@ -8,7 +8,7 @@ import MenuDetailsScreen from "./components/homecomponents/MenuDetailsScreen";
 import EditProfileScreen from "./components/profilecomponents/EditProfileScreen";
 import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
 import DeliveryStatusScreen from "./components/profilecomponents/DeliveryStatusScreen";
-import { KeyboardAvoidingView } from "react-native";
+import CheckOutScreen from "./components/homecomponents/CheckOutScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 
@@ -20,6 +20,7 @@ const HomeStack = () => {
         <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
             <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} />
+            <Stack.Screen name="CheckOut" component={CheckOutScreen} />
         </Stack.Navigator>
     );
 };

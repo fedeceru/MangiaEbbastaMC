@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { styles } from '../../Styles';
 import AppViewModel from '../../viewmodel/AppViewModel';
 import LoadingScreen from '../LoadingScreen';
@@ -26,14 +26,61 @@ const MenuDetailsScreen = ({ route, navigation }) => {
         fetchMenuDetails();
     }, []);
 
-    const handleBuyMenu = async () => {
+    const handleCanPlaceOrder = async () => {
         try {
-            let result = await AppViewModel.buyMenu(menu.mid);
-            console.log(result);
-            //creo schermata per checkout 
-            navigation.goBack();
+            const canUserPlaceOrder = await AppViewModel.canUserPlaceOrder();
+
+            if (!canUserPlaceOrder.isProfileComplete) {
+                const reason = "non hai inserito i dati della carta di credito, pocedi alla schermata di modifica profilo per completare l'acquisto"; 
+                const onCancel = () => navigation.goBack();
+                const onProceed = () => navigation.navigate('HomeTab', { screen: 'Profile' });
+
+                Alert.alert(
+                    "Impossibile Procedere",
+                    `Non puoi completare l'acquisto perché: ${reason}`,
+                    [
+                        {
+                            text: "Annulla",
+                            onPress: onCancel,
+                            style: "cancel", 
+                        },
+                        {
+                            text: "Modifica Profilo",
+                            onPress: onProceed,
+                        },
+                    ],
+                    { cancelable: false } 
+                );
+            }
+
+            if (canUserPlaceOrder.isOrderInProgress) {
+                const reason = "hai già un ordine in corso, non puoi farne un altro fiché l'utimo non è stato consegnato"; 
+                const onCancel = () => navigation.goBack();
+                const onProceed = () => navigation.navigate('OrderTab');
+                
+                Alert.alert(
+                    "Impossibile Procedere",
+                    `Non puoi completare l'acquisto perché: ${reason}`,
+                    [
+                        {
+                            text: "Annulla",
+                            onPress: onCancel,
+                            style: "cancel", 
+                        },
+                        {
+                            text: "Visualizza Ordine",
+                            onPress: onProceed, 
+                        },
+                    ],
+                    { cancelable: false } 
+                );
+            }
+
+            if (canUserPlaceOrder.isProfileComplete && !canUserPlaceOrder.isOrderInProgress) {
+                navigation.navigate('CheckOut', {menu});
+            }
         } catch (error) {
-            console.log(error);
+            console.error("Errore durante il controllo:", error);
         }
     }
 
@@ -53,7 +100,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                     <Text style={styles.detailsText}>Tempo di consegna: {menuDetails.deliveryTime}</Text>
                     <Text style={styles.detailsText}>Prezzo: {menuDetails.price}€</Text>
                     <Text style={styles.detailsText}>{menuDetails.longDescription}</Text>
-                    <TouchableOpacity style={styles.detailsButton} onPress={handleBuyMenu}>
+                    <TouchableOpacity style={styles.detailsButton} onPress={handleCanPlaceOrder}>
                         <Text style={styles.detailsButtonText}>Acquista</Text>
                     </TouchableOpacity>
                 </View>
