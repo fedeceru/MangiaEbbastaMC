@@ -38,7 +38,7 @@ const ProfileStack = () => {
 const OrderStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="OrderStatus" component={OrderStatusScreen} />
+            <Stack.Screen name="OrderStatus" component={OrderStatusScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 };
@@ -48,6 +48,7 @@ const TabNavigator = () => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,
+                tabBarHideOnKeyboard: true,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
                     if (route.name === "HomeTab") {

@@ -28,8 +28,8 @@ const MenuDetailsScreen = ({ route, navigation }) => {
 
     const handleCanPlaceOrder = async () => {
         try {
+            console.log("checking if user can place order...");
             const canUserPlaceOrder = await AppViewModel.canUserPlaceOrder();
-            console.log("canUserPlaceOrder:", canUserPlaceOrder);
 
             if (!canUserPlaceOrder.isProfileComplete) {
                 const reason = "non hai inserito i dati della carta di credito, pocedi alla schermata di modifica profilo per completare l'acquisto"; 
@@ -48,6 +48,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                         {
                             text: "Modifica Profilo",
                             onPress: onProceed,
+                            style: "default",
                         },
                     ],
                     { cancelable: false } 
@@ -71,6 +72,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                         {
                             text: "Visualizza Ordine",
                             onPress: onProceed, 
+                            style: "default",
                         },
                     ],
                     { cancelable: false } 

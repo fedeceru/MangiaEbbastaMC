@@ -148,6 +148,10 @@ export default class AppViewModel {
     //acquisto di un menu
     static async buyMenu(mid) {
         try {
+            if (!this.currentLocation) {
+                console.log("currentLocation not initialized");
+                return;
+            }
             return await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
         } catch (error) {
             console.log("Error during buyMenu: ", error);
