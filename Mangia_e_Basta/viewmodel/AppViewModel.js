@@ -6,6 +6,8 @@ import StorageManager from "../model/StorageManager";
 export default class AppViewModel {
     static storageManager;
     static currentLocation;
+    static isProfileComplete = false;
+    static isOrderInProgress = false;
 
     //controlla se l'utente è già loggato
     static async checkFirstRun() {
@@ -129,32 +131,51 @@ export default class AppViewModel {
 
     //controlla che il profilo sia completo e che non ci siano ordini in corso per permettere l'acquisto di un menu
     static async canUserPlaceOrder() {
-        let isProfileComplete = false;
-        let isOrderInProgress = false;
         try {
             const userInfo = await this.fetchUserInfo();
             if (userInfo && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) {
-                isProfileComplete = true;
+                this.isProfileComplete = true;
             }  
             if (userInfo.orderStatus === "ON_DELIVERY") {
-                isOrderInProgress = true;
+                this.isOrderInProgress = true;
             }
-            return { isProfileComplete, isOrderInProgress };
+            return { isProfileComplete: this.isProfileComplete, isOrderInProgress:  this.isOrderInProgress };
         } catch (error) {
             console.log("Error during checkProdileCompleteness: ", error);
         }
     }
 
-    //acquisto di un menu
+    //acquisto di un menu, se l'ordine va a buon fine mi salvo in asyncStorage l'oid dell'ordine e il mid del menu acquistato
     static async buyMenu(mid) {
         try {
             if (!this.currentLocation) {
                 console.log("currentLocation not initialized");
                 return;
             }
-            return await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
+            if (!this.isProfileComplete || this.isOrderInProgress) {
+                console.log("user profile incomplete or order in progress");
+                return;
+            }
+            const result = await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
+            if (result && result.oid) {
+                await AsyncStorage.setItem( 'oid', JSON.stringify(result.oid));
+            }
+            return result;
         } catch (error) {
             console.log("Error during buyMenu: ", error);
+        }
+    }
+
+    //recupero lo stato dell'ordine
+    static async fetchOrderStatus() {
+        try {
+            const oid = JSON.parse(await AsyncStorage.getItem('oid'));
+            if (oid) {
+                return await CommunicationController.getOrderStatus(oid);
+            } 
+            console.log("oid not found in asyncStorage");
+        } catch (error) {
+            console.log("Error during fetchOrderStatus: ", error);
         }
     }
 

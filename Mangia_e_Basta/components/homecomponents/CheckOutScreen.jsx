@@ -8,10 +8,9 @@ const CheckOutScreen = ({ route, navigation }) => {
     const [isBought, setIsBought] = useState(false);
 
     const handleConfirmOrder = async () => {
-        console.log("Ordine confermato per:", menu.name);
         const result = await AppViewModel.buyMenu(menu.mid);
-        console.log("Risultato acquisto:", result);
         if (result) {
+            console.log("Ordine confermato per:", menu.name);
             setIsBought(true);
         }
     };

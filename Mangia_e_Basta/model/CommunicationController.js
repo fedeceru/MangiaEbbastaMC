@@ -124,4 +124,11 @@ export default class CommunicationController {
       console.log("buyMenu called with ebdpoint: " + endpoint + " and bodyParams: " + JSON.stringify(bodyParams));
       return await this.genericRequest(endpoint, "POST", {}, bodyParams);
     }
+
+    static async getOrderStatus(oid) {
+      let endpoint = "order/" + oid;
+      let queryParams = {sid: this.sid};
+      console.log("getOrderStatus called with ebdpoint: " + endpoint + " and queryParams: " + JSON.stringify(queryParams));
+      return await this.genericRequest(endpoint, "GET", queryParams, {});
+    }
 }
