@@ -158,6 +158,7 @@ export default class AppViewModel {
             }
             const result = await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
             if (result && result.oid) {
+                console.log("oid: ", result.oid);
                 await AsyncStorage.setItem( 'oid', JSON.stringify(result.oid));
             }
             return result;
@@ -173,7 +174,6 @@ export default class AppViewModel {
             if (oid) {
                 return await CommunicationController.getOrderStatus(oid);
             } 
-            console.log("oid not found in asyncStorage");
         } catch (error) {
             console.log("Error during fetchOrderStatus: ", error);
         }
@@ -185,7 +185,8 @@ export default class AppViewModel {
             if (!this.storageManager) {
                 console.log("StorageManager not initialized");
                 return;
-            } else if (!this.currentLocation) {
+            } 
+            if (!this.currentLocation) {
                 console.log("currentLocation not initialized");
                 return;
             }

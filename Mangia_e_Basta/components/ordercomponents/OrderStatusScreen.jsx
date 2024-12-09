@@ -3,53 +3,63 @@ import { useEffect, useState } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AppViewModel from "../../viewmodel/AppViewModel";
 import { useIsFocused } from "@react-navigation/native";
+import LoadingScreen from "../LoadingScreen";
 
 export default function App() {
-    //devo recuperare la posizione attuale dell'utente e la posizione del menu che ho ordinato, inoltre calcolo ogni 5 secondi anche la posizione del drone che mi porta il cibo
-    //qua deve essere presente il nome del menu, la sua posizione, la posizione del drone che deve essere aggionrata ogni 5 secondi, la posizione nella quale deve essere spedito il menu
     const [orderInfo, setOrderInfo] = useState({
+        mid: null,
         creationTimestamp: null,
-        expectedDeliveryTimestamp: null,
+        expectesDeliveryTimestamp: null,
         status: null,
     });
+    const [menuInfo, setMenuInfo] = useState({
+        menuName: null,
+        menuLocation: [],
+    });
     const [dronePosition, setDronePosition] = useState([]);
-    const [menuInfo, setMenuInfo] = useState([]);
-    const [userPosition, setUserPosition] = useState([]);
-    const [deliveryPosition, setDeliveryPosition] = useState([]);
+    const [deliveryLocation, setDeliveryLocation] = useState([]);
+    
     const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();   
     
-    //creo un interval che ogni 5 secondi faccia la chiamata dello stato dell'ordine e aggiorno la posizione del drone
     useEffect(() => {
         let requestInterval = null;
         if (isFocused) {
             requestInterval = setInterval(async () => {
                 console.log("fetching order status...");
                 const orderData = await AppViewModel.fetchOrderStatus();
-                console.log("orderInfo: ", orderData); 
                 if (orderData) {
-                    setOrderInfo(orderData);
-                    if (!orderData.menuPosition && !orderData.userPosition) {
-                        setUserPosition(orderData.deliveryLocation);
-                        const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
-                        console.log("menuData: ", menuData);
-                        if (menuData) {
-                            setMenuInfo({ menuPosition: menuData.location, menuName: menuData.name });
-                        } 
-                    }
-                    setDronePosition(orderData.dronePosition);
-                    
+                    setOrderInfo({
+                        mid: orderData.mid,
+                        creationTimestamp: orderData.creationTimestamp,
+                        expectesDeliveryTimestamp: orderData.expectesDeliveryTimestamp,
+                        status: orderData.status,
+                    });
+                    setDeliveryLocation(orderData.deliveryLocation);
+                    console.log("fetching menu info...");
+                    const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
+                    if (menuData) {
+                        setMenuInfo({ menuLocation: menuData.location, menuName: menuData.name });
+                    } 
+                    setDronePosition(orderData.currentPosition);
+                    setIsLoading(false);
                 }
             }, 5000);    
         } 
 
         return () => clearInterval(requestInterval);
-    }, [isFocused]);
-
+    }, [isFocused, dronePosition]);
+    
     const handleRegionChanged = (region) => {
     };
 
-    if (orderInfo.status) {
+    if (isLoading) {
+        return (
+            <LoadingScreen />
+        );
+    };
+
+    if (orderInfo && orderInfo.status) {
         return (
             <SafeAreaView style={styles.mapContainer}>
                 <MapView
@@ -61,28 +71,41 @@ export default function App() {
                     zoomControlEnabled={true}
                     loadingEnabled={true}
                     initialRegion={{
-                        latitude: userPosition.lat,
-                        longitude: userPosition.lng,
+                        latitude: dronePosition.lat ? dronePosition.lat : 0, 
+                        longitude: dronePosition.lng ? dronePosition.lng : 0,
                         latitudeDelta: 0.005,
                         longitudeDelta: 0.005,
                     }}
                 >
-                    <Marker
-                        coordinate={userPosition}
-                        title="Posizione attuale"
-                        description="La mia posizione attuale"
-                        pinColor="blue"
-                    />
-                    <Marker
-                        coordinate={menuInfo.menuPosition}
-                        title="Dipartimento di Informatica"
-                        description="Via Celoria 18, 20133 Milano"
-                    />
-                    <Polyline
-                        coordinates={[userPosition, menuInfo.menuPosition]}
-                        strokeColor="green"
-                        strokeWidth={2}
-                    />
+                    {deliveryLocation.lat && (
+                        <Marker
+                            coordinate={{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }}
+                            title="Posizione di consegna"
+                            description="La tua posizione di consegna"
+                            pinColor="blue"
+                        />
+                    )}
+                    {menuInfo.menuLocation && (
+                        <Marker
+                            coordinate={{ latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }}
+                            title="Posizione del menu"
+                            description="La posizione del menu che hai ordinato"
+                        />
+                    )}
+                    {dronePosition && (
+                        <Marker
+                            coordinate={{ latitude: dronePosition.lat, longitude: dronePosition.lng }}
+                            title="Drone"
+                            description="Sto deliverando il tuo cibo"
+                        />
+                    )}
+                    {deliveryLocation && menuInfo.menuLocation && dronePosition && (
+                        <Polyline
+                            coordinates={[{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }, { latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }]}
+                            strokeColor="green"
+                            strokeWidth={2}
+                        />
+                    )}
                 </MapView>
             </SafeAreaView>
         );
