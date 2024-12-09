@@ -29,13 +29,12 @@ const MenuDetailsScreen = ({ route, navigation }) => {
     const handleCanPlaceOrder = async () => {
         try {
             console.log("checking if user can place order...");
-            const canUserPlaceOrder = await AppViewModel.canUserPlaceOrder();
+            const checkUser = await AppViewModel.checkUser();
+            const { isProfileComplete, isOrderInProgress } = checkUser;
+            const onCancel = () => navigation.goBack();
 
-            if (!canUserPlaceOrder.isProfileComplete) {
+            if (!isProfileComplete) {
                 const reason = "non hai inserito i dati della carta di credito, pocedi alla schermata di modifica profilo per completare l'acquisto"; 
-                const onCancel = () => navigation.goBack();
-                const onProceed = () => navigation.navigate('HomeTab', { screen: 'Profile' });
-
                 Alert.alert(
                     "Impossibile Procedere",
                     `Non puoi completare l'acquisto perché ${reason}`,
@@ -47,19 +46,15 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                         },
                         {
                             text: "Modifica Profilo",
-                            onPress: onProceed,
-                            style: "default",
+                            onPress: () => navigation.navigate('ProfileTab'),
                         },
                     ],
                     { cancelable: false } 
                 );
             }
 
-            if (canUserPlaceOrder.isOrderInProgress) {
-                const reason = "hai già un ordine in corso, non puoi farne un altro fiché l'utimo non è stato consegnato"; 
-                const onCancel = () => navigation.goBack();
-                const onProceed = () => navigation.navigate('OrderTab');
-                
+            if (isOrderInProgress) {
+                const reason = "hai già un ordine in corso, non puoi farne un altro fiché l'utimo non è stato consegnato";                 
                 Alert.alert(
                     "Impossibile Procedere",
                     `Non puoi completare l'acquisto perché ${reason}`,
@@ -71,19 +66,18 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                         },
                         {
                             text: "Visualizza Ordine",
-                            onPress: onProceed, 
-                            style: "default",
+                            onPress: () => navigation.navigate('OrderTab'), 
                         },
                     ],
                     { cancelable: false } 
                 );
             }
 
-            if (canUserPlaceOrder.isProfileComplete && !canUserPlaceOrder.isOrderInProgress) {
+            if (isProfileComplete && !isOrderInProgress) {
                 navigation.navigate('CheckOut', {menu});
             }
         } catch (error) {
-            console.error("Errore durante il controllo:", error);
+            console.error(error);
         }
     }
 

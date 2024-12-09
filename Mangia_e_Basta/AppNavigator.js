@@ -20,7 +20,7 @@ const HomeStack = () => {
         <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
             <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} />
-            <Stack.Screen name="CheckOut" component={CheckOutScreen} />
+            <Stack.Screen name="CheckOut" component={CheckOutScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 };

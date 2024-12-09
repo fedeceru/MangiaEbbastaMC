@@ -14,46 +14,55 @@ export default function App() {
     });
     const [menuInfo, setMenuInfo] = useState({
         menuName: null,
-        menuLocation: [],
+        menuLocation: null,
     });
-    const [dronePosition, setDronePosition] = useState([]);
-    const [deliveryLocation, setDeliveryLocation] = useState([]);
+    const [dronePosition, setDronePosition] = useState(null);
+    const [deliveryLocation, setDeliveryLocation] = useState(null);
     
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(null);
     const isFocused = useIsFocused();   
     
     useEffect(() => {
         let requestInterval = null;
         if (isFocused) {
-            requestInterval = setInterval(async () => {
-                console.log("fetching order status...");
-                const orderData = await AppViewModel.fetchOrderStatus();
-                if (orderData) {
-                    setOrderInfo({
-                        mid: orderData.mid,
-                        creationTimestamp: orderData.creationTimestamp,
-                        expectesDeliveryTimestamp: orderData.expectesDeliveryTimestamp,
-                        status: orderData.status,
-                    });
-                    setDeliveryLocation(orderData.deliveryLocation);
-                    console.log("fetching menu info...");
-                    const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
-                    if (menuData) {
-                        setMenuInfo({ menuLocation: menuData.location, menuName: menuData.name });
-                    } 
-                    setDronePosition(orderData.currentPosition);
-                    setIsLoading(false);
+            const fetchOrderStatus = async () => {
+                try {
+                    const checkUser = await AppViewModel.checkUser();
+                    if (checkUser.isOrderInProgress === true) {
+                        setIsLoading(true);
+                        requestInterval = setInterval(async () => {
+                            const orderData = await AppViewModel.fetchOrderStatus();
+                            if (orderData) {
+                                setOrderInfo({
+                                    mid: orderData.mid,
+                                    creationTimestamp: orderData.creationTimestamp,
+                                    expectesDeliveryTimestamp: orderData.expectesDeliveryTimestamp,
+                                    status: orderData.status,
+                                });
+                                setDeliveryLocation(orderData.deliveryLocation);
+                                const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
+                                if (menuData) {
+                                    setMenuInfo({ menuLocation: menuData.location, menuName: menuData.name });
+                                } 
+                                setDronePosition(orderData.currentPosition);
+                                setIsLoading(false);
+                            }    
+                        }, 5000);   
+                    }   
+                } catch (error) {
+                    console.log("Error during fetchOrderStatus: ", error);
                 }
-            }, 5000);    
+            }
+            fetchOrderStatus();
         } 
 
         return () => clearInterval(requestInterval);
-    }, [isFocused, dronePosition]);
-    
+    }, [isFocused]);
+        
     const handleRegionChanged = (region) => {
     };
 
-    if (isLoading) {
+    if (isLoading === true) {
         return (
             <LoadingScreen />
         );
@@ -71,8 +80,8 @@ export default function App() {
                     zoomControlEnabled={true}
                     loadingEnabled={true}
                     initialRegion={{
-                        latitude: dronePosition.lat ? dronePosition.lat : 0, 
-                        longitude: dronePosition.lng ? dronePosition.lng : 0,
+                        latitude: deliveryLocation.lat ? deliveryLocation.lat : 0, 
+                        longitude: deliveryLocation.lng ? deliveryLocation.lng : 0,
                         latitudeDelta: 0.005,
                         longitudeDelta: 0.005,
                     }}
@@ -109,13 +118,13 @@ export default function App() {
                 </MapView>
             </SafeAreaView>
         );
-    } 
+    }; 
 
     return (
         <SafeAreaView>
             <Text>Non ci sono ordini</Text>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

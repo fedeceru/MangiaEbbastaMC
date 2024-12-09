@@ -7,8 +7,9 @@ import AppViewModel from '../../viewmodel/AppViewModel';
 import LoadingScreen from '../LoadingScreen';
 
 const HomeScreen = ({ navigation }) => {
-    const [currentPosition, setCurrentPosition] = useState(null); 
-    const [menuList, setMenuList] = useState([]);
+    //aggiungo al di sopra della lista dei menu la posizione corrente dell'utente traducendo lat e lng in un inidirizzo leggibile 
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [menuList, setMenuList] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
 
@@ -18,7 +19,7 @@ const HomeScreen = ({ navigation }) => {
                 try {
                     console.log("getting current position...");
                     const location = await AppViewModel.getCurrentPosition();
-                    setCurrentPosition(location);
+                    setCurrentLocation(location);
                     if (location) {
                         console.log("fetching menu list...");
                         const menuData = await AppViewModel.fetchMenuList();

@@ -2,16 +2,24 @@ import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, SafeAreaView, ScrollView } from "react-native";
 import AppViewModel from "../../viewmodel/AppViewModel";
 import { styles } from "../../Styles";
+import LoadingScreen from "../LoadingScreen";
 
 const CheckOutScreen = ({ route, navigation }) => {
     const { menu } = route.params;
     const [isBought, setIsBought] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleConfirmOrder = async () => {
-        const result = await AppViewModel.buyMenu(menu.mid);
-        if (result) {
-            console.log("Ordine confermato per:", menu.name);
-            setIsBought(true);
+        try {
+            setIsLoading(true);
+            const result = await AppViewModel.buyMenu(menu.mid);
+            if (result) {
+                console.log("Ordine confermato per:", menu.name);
+                setIsBought(true);
+                setIsLoading(false);
+            }    
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -19,6 +27,12 @@ const CheckOutScreen = ({ route, navigation }) => {
         console.log("Ordine annullato");
         navigation.goBack();
     };
+
+    if (isLoading) {
+        return (
+            <LoadingScreen />
+        );
+    }
 
     if (isBought) {
         return (
