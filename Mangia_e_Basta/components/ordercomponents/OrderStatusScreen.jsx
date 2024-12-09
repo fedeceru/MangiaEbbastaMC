@@ -101,7 +101,7 @@ export default function App() {
                     )}
                     {deliveryLocation && menuInfo.menuLocation && dronePosition && (
                         <Polyline
-                            coordinates={[{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }, { latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }]}
+                            coordinates={[{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }, { latitude: dronePosition.lat, longitude: dronePosition.lng }, { latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }]}
                             strokeColor="green"
                             strokeWidth={2}
                         />
