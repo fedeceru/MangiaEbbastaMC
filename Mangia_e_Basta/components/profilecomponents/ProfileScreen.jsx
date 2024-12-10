@@ -23,7 +23,6 @@ const ProfileScreen = ({ navigation }) => {
                     console.error("Error fetching user info:", error);
                 }
             }
-    
             fetchUserInfo();    
         }
     }, [isFocused]);
@@ -38,7 +37,7 @@ const ProfileScreen = ({ navigation }) => {
         <ScrollView >
             <View style={styles.profileCard}>
                 <Image
-                    source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' }}
+                    source={require("../../assets/userPlaceholder.png")}
                     style={styles.profileImage}
                 />
                 <Text style={styles.profileName}>{`${userInfo.firstName || ''} ${userInfo.lastName || ''}`}</Text>

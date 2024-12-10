@@ -25,7 +25,7 @@ const LocationScreen = ({ handleLocationPermission, accessCounter }) => {
     if (status === "denied") {
         return (
             <SafeAreaView style={styles.locationContainer}>
-                <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/128/17463/17463780.png' }} style={styles.locationImage} />
+                <Image source={require("../../assets/locationDeniedIcon.png")} style={styles.locationImage} />
                 <Text style={styles.locationTitle}>Permesso Negato</Text>
                 <Text style={styles.locationDescription}>
                     Non possiamo proseguire senza il permesso di accedere alla tua posizione.
@@ -39,7 +39,7 @@ const LocationScreen = ({ handleLocationPermission, accessCounter }) => {
 
     return (
         <SafeAreaView style={styles.locationContainer}>
-            <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/128/854/854878.png' }} style={styles.locationImage} />
+            <Image source={require("../../assets/locationPermissionIcon.png")} style={styles.locationImage} />
             <Text style={styles.locationTitle}>Condividi la tua posizione</Text>
             <Text style={styles.locationDescription}>
                 La useremo per mostrarti i menu nei dintorni e la mappa per tenerne traccia.

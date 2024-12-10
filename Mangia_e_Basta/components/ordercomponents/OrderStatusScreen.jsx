@@ -5,25 +5,29 @@ import AppViewModel from "../../viewmodel/AppViewModel";
 import { useIsFocused } from "@react-navigation/native";
 import LoadingScreen from "../LoadingScreen";
 import { styles } from "../../Styles";
+import { set } from "react-hook-form";
 
 const OrderStatusScreen = ({ navigation }) => {
     const [orderInfo, setOrderInfo] = useState(null);
     const [menuInfo, setMenuInfo] = useState(null);
     const [dronePosition, setDronePosition] = useState(null);
     const [deliveryLocation, setDeliveryLocation] = useState(null);
-    const [region, setRegion] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
+    const [region, setRegion] = useState(null);
 
     useEffect(() => {
         let interval = null;
         const initDroneTracking = async () => {
             try {
-                const checkUser = await AppViewModel.checkUser();
-                if (checkUser.isOrderInProgress) {
-                    setIsLoading(true);
-                    await fetchOrderStatus();
+                const status = await fetchOrderStatus();
+                setIsLoading(false);
+                if (status === "ON_DELIVERY") {
                     interval = setInterval(droneTracking, 5000);
+                } else {
+                    if (interval) {
+                        clearInterval(interval);
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -64,25 +68,25 @@ const OrderStatusScreen = ({ navigation }) => {
                 if (menuData) {
                     setMenuInfo({ menuLocation: menuData.location, menuName: menuData.name });
                 }
-                setDronePosition(orderData.currentPosition);
+                /*setDronePosition(orderData.currentPosition);
                 setRegion({
                     latitude: orderData.currentPosition.lat,
                     longitude: orderData.currentPosition.lng,
                     latitudeDelta: 0.05,
                     longitudeDelta: 0.05,
-                });
-                setIsLoading(false);
+                });*/
+                return orderData.status;
             }
         } catch (error) {
             console.log(error);
         }
     }
 
-    if (isLoading === true) {
+    if (isLoading) {
         return (
             <LoadingScreen />
         );
-    };
+    }
 
     if (!orderInfo) {
         return (
@@ -102,7 +106,7 @@ const OrderStatusScreen = ({ navigation }) => {
         <SafeAreaView style={localStyles.mapContainer}>                
             <MapView
                 style={localStyles.map}
-                scrollEnabled={false}
+                scrollEnabled={true}
                 showsCompass={true}
                 showsMyLocationButton={true}
                 showsUserLocation={true}
@@ -118,7 +122,7 @@ const OrderStatusScreen = ({ navigation }) => {
                         description="La tua posizione di consegna"
                     />
                 )}
-                {menuInfo.menuLocation && (
+                {menuInfo && menuInfo.menuLocation && (
                     <Marker
                         image={require("../../assets/menuMarker.png")}
                         coordinate={{ latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }}
@@ -134,7 +138,7 @@ const OrderStatusScreen = ({ navigation }) => {
                         description="Sto deliverando il tuo cibo"
                     />
                 )}
-                {deliveryLocation && menuInfo.menuLocation && dronePosition && (
+                {deliveryLocation && menuInfo && menuInfo.menuLocation && dronePosition && (
                     <Polyline
                         coordinates={[{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }, { latitude: dronePosition.lat, longitude: dronePosition.lng }, { latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }]}
                         strokeColor="green"

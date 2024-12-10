@@ -39,7 +39,7 @@ const CheckOutScreen = ({ route, navigation }) => {
             <SafeAreaView style={styles.COcontainer}>
                 <View style={styles.COconfirmationContainer}>
                     <Image
-                        source={{ uri: "https://cdn-icons-png.flaticon.com/128/3765/3765478.png" }}
+                        source={require("../../assets/checkOutIcon.png")}
                         style={styles.COsuccessIcon}
                     />
                     <Text style={styles.COconfirmationTitle}>Ordine Confermato!</Text>
