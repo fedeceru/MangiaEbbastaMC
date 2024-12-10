@@ -42,7 +42,7 @@ const OrderStatusScreen = ({ navigation }) => {
                 clearInterval(interval);
             }
         }
-    }, [isFocused]);
+    }, [isFocused, orderStatus]);
 
     const droneTracking = async () => {
         const orderData = await AppViewModel.fetchOrderStatus();
@@ -58,12 +58,19 @@ const OrderStatusScreen = ({ navigation }) => {
     const fetchOrderStatus = async () => {
         try {
             const orderData = await AppViewModel.fetchOrderStatus();
+            console.log("orderdata", orderData);
             if (orderData) {
                 setOrderStatus(orderData.status);
-                setOrderInfo({
-                    creationTimestamp: orderData.creationTimestamp,
-                    expectesDeliveryTimestamp: orderData.expectesDeliveryTimestamp,
-                });
+                if (orderData.status === "COMPLETED") {
+                    setOrderInfo({    
+                        expectedDeliveryTimestamp : orderData.deliveryTimestamp,
+                    });
+                } else {
+                    setOrderInfo({
+                        creationTimestamp : orderData.creationTimestamp,
+                        expectedDeliveryTimestamp : orderData.expectedDeliveryTimestamp
+                    });
+                }
                 setDeliveryLocation(orderData.deliveryLocation);
                 const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
                 if (menuData) {
@@ -154,9 +161,26 @@ const OrderStatusScreen = ({ navigation }) => {
                     />
                 )}
             </MapView>
+            {orderStatus === "ON_DELIVERY" && (
+                <View style={localStyles.orderInfoContainer}>
+                    <Text></Text>
+                    <Text style={localStyles.orderStatusText}>Stiamo consegnando il tuo ordine</Text>
+                    <Text>{menuInfo.name}</Text>
+                </View>
+            )}
+
+            {orderStatus === "COMPLETED" && (
+                <View style={localStyles.orderInfoContainer}>
+                    <Text style={localStyles.orderStatusText}>Ordine consegnato</Text>
+                </View>
+            )}
         </SafeAreaView>
     );
 }
+//deliveryTimestamp
+//creationTimestamp
+//expectedDeliveryTimestamp
+
 
 export default OrderStatusScreen;
 
