@@ -5,14 +5,14 @@ import AppViewModel from "../../viewmodel/AppViewModel";
 import { useIsFocused } from "@react-navigation/native";
 import LoadingScreen from "../LoadingScreen";
 import { styles } from "../../Styles";
-import { set } from "react-hook-form";
 
 const OrderStatusScreen = ({ navigation }) => {
     const [orderInfo, setOrderInfo] = useState(null);
+    const [orderStatus, setOrderStatus] = useState(null);
     const [menuInfo, setMenuInfo] = useState(null);
     const [dronePosition, setDronePosition] = useState(null);
     const [deliveryLocation, setDeliveryLocation] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(null);
     const isFocused = useIsFocused();
     const [region, setRegion] = useState(null);
 
@@ -20,8 +20,8 @@ const OrderStatusScreen = ({ navigation }) => {
         let interval = null;
         const initDroneTracking = async () => {
             try {
+                setIsLoading(true);
                 const status = await fetchOrderStatus();
-                setIsLoading(false);
                 if (status === "ON_DELIVERY") {
                     interval = setInterval(droneTracking, 5000);
                 } else {
@@ -29,6 +29,7 @@ const OrderStatusScreen = ({ navigation }) => {
                         clearInterval(interval);
                     }
                 }
+                setIsLoading(false);
             } catch (error) {
                 console.log(error);
             }
@@ -58,23 +59,23 @@ const OrderStatusScreen = ({ navigation }) => {
         try {
             const orderData = await AppViewModel.fetchOrderStatus();
             if (orderData) {
+                setOrderStatus(orderData.status);
                 setOrderInfo({
                     creationTimestamp: orderData.creationTimestamp,
                     expectesDeliveryTimestamp: orderData.expectesDeliveryTimestamp,
-                    status: orderData.status,
                 });
                 setDeliveryLocation(orderData.deliveryLocation);
                 const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
                 if (menuData) {
                     setMenuInfo({ menuLocation: menuData.location, menuName: menuData.name });
                 }
-                /*setDronePosition(orderData.currentPosition);
+                setDronePosition(orderData.currentPosition);
                 setRegion({
                     latitude: orderData.currentPosition.lat,
                     longitude: orderData.currentPosition.lng,
                     latitudeDelta: 0.05,
                     longitudeDelta: 0.05,
-                });*/
+                });
                 return orderData.status;
             }
         } catch (error) {
@@ -88,7 +89,7 @@ const OrderStatusScreen = ({ navigation }) => {
         );
     }
 
-    if (!orderInfo) {
+    if (!orderStatus) {
         return (
             <SafeAreaView>
                 <Text style={styles.listTitle}>Al momento non ci sono ordini</Text>
@@ -111,7 +112,7 @@ const OrderStatusScreen = ({ navigation }) => {
                 showsMyLocationButton={true}
                 showsUserLocation={true}
                 zoomControlEnabled={true}
-                loadingEnabled={true}
+                loadingEnabled={false}
                 region={region ? region : { latitude: 0, longitude: 0, latitudeDelta: 0.05, longitudeDelta: 0.05, }}
             >
                 {deliveryLocation && (
