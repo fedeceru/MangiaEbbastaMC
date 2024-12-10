@@ -166,16 +166,13 @@ export default class AppViewModel {
     //recupero lo stato dell'ordine, solo se l'ordine è stato effettuato
     static async fetchOrderStatus() {
         try {
-            console.log("checking if User has an order in progress or completed..."); 
-            const checkUser = await this.checkUser();
-            if (checkUser.isOrderInProgress === true) {
-                const oid = JSON.parse(await AsyncStorage.getItem('oid'));
-                if (oid) {
-                    return await CommunicationController.getOrderStatus(oid);
-                } 
+            console.log("checking if User has an order in progress or completed...");
+            const oid = await AsyncStorage.getItem('oid');
+            if (!oid) {
+                console.log("No order in progress or completed");
+                return;
             }
-
-            return;
+            return await CommunicationController.getOrderStatus(JSON.parse(oid));
         } catch (error) {
             console.log("Error during fetchOrderStatus: ", error);
         }

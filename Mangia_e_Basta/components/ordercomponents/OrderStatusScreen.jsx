@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, SafeAreaView, Text, TouchableOpacity, View, Image } from "react-native";
 import { useEffect, useState } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AppViewModel from "../../viewmodel/AppViewModel";
@@ -91,15 +91,22 @@ const OrderStatusScreen = ({ navigation }) => {
 
     if (!orderStatus) {
         return (
-            <SafeAreaView>
-                <Text style={styles.listTitle}>Al momento non ci sono ordini</Text>
-                <Text style={styles.listCaption}>Puoi ordinare un menu nella sezione dedicata!</Text>
-                <View style={styles.CObuttonsContainer}>
-                    <TouchableOpacity style={styles.COprimaryButton} onPress={() => navigation.navigate('HomeTab')}>
-                        <Text style={styles.CObuttonText}>Ordina</Text>
-                    </TouchableOpacity>
+            <SafeAreaView style={localStyles.container}>
+            <View style={localStyles.imageWrapper}>
+                <View style={localStyles.imageBackground}>
+                    <Image source={require("../../assets/emptyCartIcon.png")} style={localStyles.image} />
                 </View>
-            </SafeAreaView>
+            </View>
+            <Text style={localStyles.title}>Nessun ordine trovato</Text>
+            <Text style={localStyles.description}>Al momento non ci sono ordini disponibili.</Text>
+            <Text style={localStyles.instructions}>Puoi ordinare un menu nella sezione dedicata!</Text>
+            
+            <View style={localStyles.buttonsContainer}>
+                <TouchableOpacity style={localStyles.primaryButton} onPress={() => navigation.navigate('HomeTab')}>
+                    <Text style={localStyles.buttonText}>Ordina</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
         );
     }
 
@@ -162,5 +169,65 @@ const localStyles = StyleSheet.create({
     },
     map: {
         ...StyleSheet.absoluteFillObject,
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#f8f9fc',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    },
+    imageWrapper: {
+        marginBottom: 20,
+    },
+    imageBackground: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        backgroundColor: '#e0f7fa',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    image: {
+        width: 60,
+        height: 60,
+        resizeMode: 'contain',
+    },
+    title: {
+        fontSize: 22,
+        fontWeight: '700',
+        color: '#333',
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    description: {
+        fontSize: 16,
+        color: '#555',
+        marginBottom: 4,
+        textAlign: 'center',
+    },
+    instructions: {
+        fontSize: 14,
+        color: '#777',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    buttonsContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+    },
+    primaryButton: {
+        backgroundColor: '#007bff',
+        paddingVertical: 12,
+        paddingHorizontal: 40,
+        borderRadius: 8,
+        marginBottom: 10,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: 16,
     },
 });

@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, TouchableOpacity, Image } from 'react-native';
+import { Text, TouchableOpacity, Image, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { styles } from '../../Styles';
 import AppViewModel from '../../viewmodel/AppViewModel';
@@ -25,13 +25,18 @@ const LocationScreen = ({ handleLocationPermission, accessCounter }) => {
     if (status === "denied") {
         return (
             <SafeAreaView style={styles.locationContainer}>
-                <Image source={require("../../assets/locationDeniedIcon.png")} style={styles.locationImage} />
+                <View style={styles.locationImageWrapper}>
+                    <View style={styles.locationImageBackgroundDenied}>
+                        <Image source={require("../../assets/locationDeniedIcon.png")} style={styles.locationImage} />
+                    </View>
+                </View>
                 <Text style={styles.locationTitle}>Permesso Negato</Text>
                 <Text style={styles.locationDescription}>
                     Non possiamo proseguire senza il permesso di accedere alla tua posizione.
                 </Text>
                 <Text style={styles.locationInstructions}>
-                    Per favore, riavvia l'app o vai nelle impostazioni del sistema operativo e abilita l'accesso alla posizione per questa applicazione.
+                    Per favore, riavvia l'app o vai nelle impostazioni del sistema operativo e abilita l'accesso alla
+                    posizione per questa applicazione.
                 </Text>
             </SafeAreaView>
         );
@@ -39,7 +44,11 @@ const LocationScreen = ({ handleLocationPermission, accessCounter }) => {
 
     return (
         <SafeAreaView style={styles.locationContainer}>
-            <Image source={require("../../assets/locationPermissionIcon.png")} style={styles.locationImage} />
+            <View style={styles.locationImageWrapper}>
+                <View style={styles.locationImageBackgroundGranted}>
+                    <Image source={require("../../assets/locationPermissionIcon.png")} style={styles.locationImage} />
+                </View>
+            </View>
             <Text style={styles.locationTitle}>Condividi la tua posizione</Text>
             <Text style={styles.locationDescription}>
                 La useremo per mostrarti i menu nei dintorni e la mappa per tenerne traccia.
