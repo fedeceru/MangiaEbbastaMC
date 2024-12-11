@@ -31,6 +31,8 @@ const MenuDetailsScreen = ({ route, navigation }) => {
             console.log("checking if user can place order...");
             const checkUser = await AppViewModel.checkUser();
             const { isProfileComplete, isOrderInProgress } = checkUser;
+            console.log("isProfileComplete: ", isProfileComplete);
+            console.log("isOrderInProgress: ", isOrderInProgress);
             const onCancel = () => navigation.goBack();
 
             if (!isProfileComplete) {

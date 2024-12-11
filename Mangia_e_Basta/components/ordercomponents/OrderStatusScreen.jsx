@@ -1,10 +1,9 @@
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, View, Image } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AppViewModel from "../../viewmodel/AppViewModel";
-import { useIsFocused } from "@react-navigation/native";
 import LoadingScreen from "../LoadingScreen";
-import { styles } from "../../Styles";
+import { useIsFocused } from "@react-navigation/native";
 
 const OrderStatusScreen = ({ navigation }) => {
     const [orderInfo, setOrderInfo] = useState(null);
@@ -13,64 +12,51 @@ const OrderStatusScreen = ({ navigation }) => {
     const [dronePosition, setDronePosition] = useState(null);
     const [deliveryLocation, setDeliveryLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(null);
-    const isFocused = useIsFocused();
     const [region, setRegion] = useState(null);
+    const isFocused = useIsFocused();
+    const intervalId = useRef(null); 
 
     useEffect(() => {
-        let interval = null;
-        const initDroneTracking = async () => {
-            try {
-                setIsLoading(true);
-                const status = await fetchOrderStatus();
-                if (status === "ON_DELIVERY") {
-                    interval = setInterval(droneTracking, 5000);
-                } else {
-                    if (interval) {
-                        clearInterval(interval);
-                    }
-                }
-                setIsLoading(false);
-            } catch (error) {
-                console.log(error);
-            }
-        }
         if (isFocused) {
-            initDroneTracking();
+            fetchOrderData().then((status) => {
+                if (status === "ON_DELIVERY") {
+                    intervalId.current = setInterval(droneTracking, 5000);
+                }       
+            });
+        } else {
+            clearInterval(intervalId.current); 
         }
-        return () => {
-            if (interval) {
-                clearInterval(interval);
-            }
-        }
-    }, [isFocused, orderStatus]);
+    }, [isFocused]);
 
     const droneTracking = async () => {
         const orderData = await AppViewModel.fetchOrderStatus();
+        if (orderData.status === "COMPLETED") {
+            setOrderStatus(orderData.status);
+            setOrderInfo({ deliveryTimestamp: orderData.deliveryTimestamp });
+            clearInterval(intervalId.current);
+        }
+        if (!region) {
+            setRegion({
+                latitude: orderData.currentPosition.lat,
+                longitude: orderData.currentPosition.lng,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+            });
+        }
         setDronePosition(orderData.currentPosition);
-        setRegion({
-            latitude: orderData.currentPosition.lat,
-            longitude: orderData.currentPosition.lng,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-        });
-    }
+    };
 
-    const fetchOrderStatus = async () => {
+    const fetchOrderData = async () => {
         try {
+            setIsLoading(true);
             const orderData = await AppViewModel.fetchOrderStatus();
-            console.log("orderdata", orderData);
             if (orderData) {
                 setOrderStatus(orderData.status);
-                if (orderData.status === "COMPLETED") {
-                    setOrderInfo({    
-                        expectedDeliveryTimestamp : orderData.deliveryTimestamp,
-                    });
-                } else {
-                    setOrderInfo({
-                        creationTimestamp : orderData.creationTimestamp,
-                        expectedDeliveryTimestamp : orderData.expectedDeliveryTimestamp
-                    });
-                }
+                setOrderInfo({
+                    creationTimestamp: orderData.creationTimestamp,
+                    expectedDeliveryTimestamp: orderData.expectedDeliveryTimestamp,
+                    deliveryTimestamp: orderData.deliveryTimestamp
+                });
                 setDeliveryLocation(orderData.deliveryLocation);
                 const menuData = await AppViewModel.fetchMenuDetails(orderData.mid);
                 if (menuData) {
@@ -80,15 +66,24 @@ const OrderStatusScreen = ({ navigation }) => {
                 setRegion({
                     latitude: orderData.currentPosition.lat,
                     longitude: orderData.currentPosition.lng,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05,
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
                 });
-                return orderData.status;
+                setIsLoading(false);
             }
+            return orderData.status;
         } catch (error) {
             console.log(error);
+            setIsLoading(false);
         }
-    }
+    };
+
+    const extractTime = (timestamp) => {
+        const date = new Date(timestamp);
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    };
 
     if (isLoading) {
         return (
@@ -98,160 +93,189 @@ const OrderStatusScreen = ({ navigation }) => {
 
     if (!orderStatus) {
         return (
-            <SafeAreaView style={localStyles.container}>
-            <View style={localStyles.imageWrapper}>
-                <View style={localStyles.imageBackground}>
-                    <Image source={require("../../assets/emptyCartIcon.png")} style={localStyles.image} />
+            <SafeAreaView style={styles.container}>
+                <View style={styles.imageWrapper}>
+                    <View style={styles.imageBackground}>
+                        <Image source={require("../../assets/emptyCartIcon.png")} style={styles.image} />
+                    </View>
                 </View>
-            </View>
-            <Text style={localStyles.title}>Nessun ordine trovato</Text>
-            <Text style={localStyles.description}>Al momento non ci sono ordini disponibili.</Text>
-            <Text style={localStyles.instructions}>Puoi ordinare un menu nella sezione dedicata!</Text>
-            
-            <View style={localStyles.buttonsContainer}>
-                <TouchableOpacity style={localStyles.primaryButton} onPress={() => navigation.navigate('HomeTab')}>
-                    <Text style={localStyles.buttonText}>Ordina</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                <Text style={styles.title}>Nessun ordine trovato</Text>
+                <Text style={styles.description}>Al momento non ci sono ordini disponibili.</Text>
+                <Text style={styles.instructions}>Puoi ordinare un menu nella sezione dedicata!</Text>
+                
+                <View style={styles.buttonsContainer}>
+                    <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('HomeTab')}>
+                        <Text style={styles.buttonText}>Ordina</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
         );
     }
 
     return (
-        <SafeAreaView style={localStyles.mapContainer}>                
+        <SafeAreaView style={styles.mapContainer}>                
             <MapView
-                style={localStyles.map}
+                style={styles.map}
+                initialRegion={region || { latitude: 0, longitude: 0, latitudeDelta: 0.02, longitudeDelta: 0.02 }}
                 scrollEnabled={true}
                 showsCompass={true}
-                showsMyLocationButton={true}
-                showsUserLocation={true}
                 zoomControlEnabled={true}
-                loadingEnabled={false}
-                region={region ? region : { latitude: 0, longitude: 0, latitudeDelta: 0.05, longitudeDelta: 0.05, }}
             >
                 {deliveryLocation && (
                     <Marker
-                        image={require("../../assets/deliveryMarker.png")}
+                        anchor={ { x: 0.5, y: 0.5 } }
                         coordinate={{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }}
+                        image={require("../../assets/deliveryMarker.png")}
                         title="Posizione di consegna"
-                        description="La tua posizione di consegna"
+                        description="L'ordine verrà consegnato qui"
                     />
                 )}
                 {menuInfo && menuInfo.menuLocation && (
                     <Marker
-                        image={require("../../assets/menuMarker.png")}
+                        anchor={ { x: -0.05, y: 0.5 } }
                         coordinate={{ latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }}
+                        image={require("../../assets/menuMarker.png")}
                         title="Posizione del menu"
-                        description="La posizione del menu che hai ordinato"
+                        description="Il menu che hai acquistato"
                     />
                 )}
                 {dronePosition && (
                     <Marker
-                        image={require("../../assets/droneMarker.png")}
+                        anchor={{ x: 0.5, y: 0.5 }}
                         coordinate={{ latitude: dronePosition.lat, longitude: dronePosition.lng }}
+                        image={require("../../assets/droneMarker.png")}
                         title="Drone"
-                        description="Sto deliverando il tuo cibo"
+                        description="Sto consegnando il tuo cibo"                        
                     />
                 )}
                 {deliveryLocation && menuInfo && menuInfo.menuLocation && dronePosition && (
                     <Polyline
-                        coordinates={[{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }, { latitude: dronePosition.lat, longitude: dronePosition.lng }, { latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }]}
-                        strokeColor="green"
-                        strokeWidth={2}
+                        coordinates={[
+                            { latitude: deliveryLocation.lat, longitude: deliveryLocation.lng },
+                            { latitude: dronePosition.lat, longitude: dronePosition.lng },
+                            { latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }
+                        ]}
+                        strokeColor="#007bff"
+                        strokeWidth={3}
+                        lineDashPattern={[10, 5]}
                     />
                 )}
             </MapView>
-            {orderStatus === "ON_DELIVERY" && (
-                <View style={localStyles.orderInfoContainer}>
-                    <Text></Text>
-                    <Text style={localStyles.orderStatusText}>Stiamo consegnando il tuo ordine</Text>
-                    <Text>{menuInfo.name}</Text>
-                </View>
-            )}
-
-            {orderStatus === "COMPLETED" && (
-                <View style={localStyles.orderInfoContainer}>
-                    <Text style={localStyles.orderStatusText}>Ordine consegnato</Text>
-                </View>
-            )}
+            <View style={styles.statusContainer}>
+                <Image
+                    source={
+                        orderStatus === "COMPLETED"
+                            ? require("../../assets/deliverySuccessIcon.png")
+                            : require("../../assets/deliveryOnTheWayIcon.png")
+                    }
+                    style={styles.statusImage}
+                />
+                <Text style={styles.statusTitle}>
+                    {orderStatus === "COMPLETED" ? "Ordine Consegnato" : "In Consegna"}
+                </Text>
+                <Text style={styles.statusSubtitle}>
+                    {orderStatus === "COMPLETED"
+                        ? `Consegnato alle ${extractTime(orderInfo.deliveryTimestamp)}`
+                        : `Arrivo previsto alle ${extractTime(orderInfo.expectedDeliveryTimestamp)}`}
+                </Text>
+            </View>
         </SafeAreaView>
     );
-}
-//deliveryTimestamp
-//creationTimestamp
-//expectedDeliveryTimestamp
-
+};
 
 export default OrderStatusScreen;
 
-const localStyles = StyleSheet.create({
+const styles = StyleSheet.create({
     mapContainer: {
         flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundColor: "#f8f9fc",
     },
     map: {
         ...StyleSheet.absoluteFillObject,
     },
+    statusContainer: {
+        position: "absolute",
+        top: 20,
+        left: 20,
+        right: 20,
+        backgroundColor: "rgba(255, 255, 255, 0.85)",
+        borderRadius: 15,
+        padding: 15,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    statusImage: {
+        width: 50,
+        height: 50,
+        marginBottom: 10,
+    },
+    statusTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#333",
+        marginBottom: 5,
+    },
+    statusSubtitle: {
+        fontSize: 14,
+        color: "#666",
+    },
     container: {
         flex: 1,
-        backgroundColor: '#f8f9fc',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 20,
+        backgroundColor: "#f8f9fc",
     },
     imageWrapper: {
+        alignItems: "center",
         marginBottom: 20,
     },
     imageBackground: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        backgroundColor: '#e0f7fa',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "#eaeaea",
+        borderRadius: 50,
+        padding: 20,
     },
     image: {
-        width: 60,
-        height: 60,
-        resizeMode: 'contain',
+        width: 80,
+        height: 80,
     },
     title: {
         fontSize: 22,
-        fontWeight: '700',
-        color: '#333',
-        marginBottom: 8,
-        textAlign: 'center',
+        fontWeight: "bold",
+        color: "#333",
+        marginBottom: 10,
+        textAlign: "center",
     },
     description: {
         fontSize: 16,
-        color: '#555',
-        marginBottom: 4,
-        textAlign: 'center',
+        color: "#555",
+        marginBottom: 5,
+        textAlign: "center",
     },
     instructions: {
         fontSize: 14,
-        color: '#777',
+        color: "#888",
+        textAlign: "center",
         marginBottom: 20,
-        textAlign: 'center',
     },
     buttonsContainer: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
+        flexDirection: "row",
+        justifyContent: "center",
     },
     primaryButton: {
-        backgroundColor: '#007bff',
-        paddingVertical: 12,
-        paddingHorizontal: 40,
-        borderRadius: 8,
-        marginBottom: 10,
-        alignItems: 'center',
+        backgroundColor: "#007bff",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        alignItems: "center",
     },
     buttonText: {
-        color: '#fff',
-        fontWeight: '600',
         fontSize: 16,
+        color: "#fff",
+        fontWeight: "bold",
     },
 });

@@ -133,10 +133,13 @@ export default class AppViewModel {
         let isOrderInProgress = false;
         try {
             const userInfo = await this.fetchUserInfo();
+            //controllo lo stato dell'ordine, OBBLIGATORIO dato che lo stato dell'ordine nelle info dell'utente non si aggiorna fino a quando non ho fatto la richiesta per lo stato dell'ordine 
+            console.log("userInfo: ", userInfo);
+            const status = await this.fetchOrderStatus(userInfo.lastOid); 
             if (userInfo && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) {
                 isProfileComplete = true;
             }  
-            if (userInfo.orderStatus === "ON_DELIVERY") {
+            if (status === "ON_DELIVERY") {
                 isOrderInProgress = true;
             }
             return { isProfileComplete: isProfileComplete, isOrderInProgress: isOrderInProgress };
@@ -166,7 +169,6 @@ export default class AppViewModel {
     //recupero lo stato dell'ordine, solo se l'ordine è stato effettuato
     static async fetchOrderStatus() {
         try {
-            console.log("checking if User has an order in progress or completed...");
             const oid = await AsyncStorage.getItem('oid');
             if (!oid) {
                 console.log("No order in progress or completed");
