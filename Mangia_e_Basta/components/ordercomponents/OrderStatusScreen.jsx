@@ -123,7 +123,7 @@ const OrderStatusScreen = ({ navigation }) => {
             >
                 {deliveryLocation && (
                     <Marker
-                        anchor={ { x: 0.5, y: 0.5 } }
+                        anchor={{ x: 0.5, y: 0.5 }}
                         coordinate={{ latitude: deliveryLocation.lat, longitude: deliveryLocation.lng }}
                         image={require("../../assets/deliveryMarker.png")}
                         title="Posizione di consegna"
@@ -132,7 +132,7 @@ const OrderStatusScreen = ({ navigation }) => {
                 )}
                 {menuInfo && menuInfo.menuLocation && (
                     <Marker
-                        anchor={ { x: -0.05, y: 0.5 } }
+                        anchor={{ x: 0.5, y: 0.5 }}
                         coordinate={{ latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }}
                         image={require("../../assets/menuMarker.png")}
                         title="Posizione del menu"
@@ -198,9 +198,9 @@ const styles = StyleSheet.create({
         top: 20,
         left: 20,
         right: 20,
-        backgroundColor: "rgba(255, 255, 255, 0.85)",
-        borderRadius: 15,
-        padding: 15,
+        backgroundColor: "rgba(255, 255, 255, 0.65)",
+        borderRadius: 0.60,
+        padding: 20,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
