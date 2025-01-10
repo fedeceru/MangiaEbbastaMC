@@ -44,7 +44,7 @@ const EditProfileScreen = ({ route, navigation }) => {
         }
 
         if (!/^[0-9]{4}$/.test(updatedUserInfo.cardExpireYear)) {
-            newErrors.cardExpireYear = "L'anno deve essere valido e non già passato.";
+            newErrors.cardExpireYear = "L'anno di scadenza deve essere di 4 cifre.";
         }
 
         if (!/^[0-9]{3}$/.test(updatedUserInfo.cardCVV)) {
@@ -52,10 +52,12 @@ const EditProfileScreen = ({ route, navigation }) => {
         }
 
         setErrors(newErrors);
+        //mi restituisce true se non ci sono errori 
         return Object.keys(newErrors).length === 0; 
     };
 
     const handleSave = async () => {
+        //controlla che non ci siano errori
         if (!validateFields()) {
             return; 
         }

@@ -132,14 +132,12 @@ export default class AppViewModel {
         let isProfileComplete = false;
         let isOrderInProgress = false;
         try {
+            //chiedo se è giusto fare così
             const userInfo = await this.fetchUserInfo();
-            //controllo lo stato dell'ordine, OBBLIGATORIO dato che lo stato dell'ordine nelle info dell'utente non si aggiorna fino a quando non ho fatto la richiesta per lo stato dell'ordine 
-            console.log("userInfo: ", userInfo);
-            const status = await this.fetchOrderStatus(userInfo.lastOid); 
             if (userInfo && userInfo.cardFullName && userInfo.cardNumber && userInfo.cardExpireMonth && userInfo.cardExpireYear && userInfo.cardCVV) {
                 isProfileComplete = true;
             }  
-            if (status === "ON_DELIVERY") {
+            if (userInfo.orderStatus === "ON_DELIVERY") {
                 isOrderInProgress = true;
             }
             return { isProfileComplete: isProfileComplete, isOrderInProgress: isOrderInProgress };

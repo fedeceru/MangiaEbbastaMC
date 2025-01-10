@@ -96,7 +96,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                 <View style={styles.detailsCard}>
                     <Text style={styles.detailsTitle}>{menuDetails.name}</Text>
                     <Text style={styles.detailsText}>{menuDetails.shortDescription}</Text>
-                    <Text style={styles.detailsText}>Tempo di consegna: {menuDetails.deliveryTime}</Text>
+                    <Text style={styles.detailsText}>Tempo di consegna: {menuDetails.deliveryTime} min</Text>
                     <Text style={styles.detailsText}>Prezzo: {menuDetails.price}€</Text>
                     <Text style={styles.detailsText}>{menuDetails.longDescription}</Text>
                     <TouchableOpacity style={styles.detailsButton} onPress={handleCanPlaceOrder}>

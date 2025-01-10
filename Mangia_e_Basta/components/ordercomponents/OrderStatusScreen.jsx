@@ -48,9 +48,9 @@ const OrderStatusScreen = ({ navigation }) => {
 
     const fetchOrderData = async () => {
         try {
-            setIsLoading(true);
             const orderData = await AppViewModel.fetchOrderStatus();
             if (orderData) {
+                setIsLoading(true);
                 setOrderStatus(orderData.status);
                 setOrderInfo({
                     creationTimestamp: orderData.creationTimestamp,
