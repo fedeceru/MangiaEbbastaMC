@@ -7,7 +7,6 @@ import ProfileScreen from "./components/profilecomponents/ProfileScreen";
 import MenuDetailsScreen from "./components/homecomponents/MenuDetailsScreen";
 import EditProfileScreen from "./components/profilecomponents/EditProfileScreen";
 import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
-import DeliveryStatusScreen from "./components/profilecomponents/DeliveryStatusScreen";
 import CheckOutScreen from "./components/homecomponents/CheckOutScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -18,7 +17,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="HomePage" component={HomeScreen} options={{headerShown: false}}/>
             <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} />
             <Stack.Screen name="CheckOut" component={CheckOutScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
@@ -30,7 +29,6 @@ const ProfileStack = () => {
         <Stack.Navigator>
             <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-            <Stack.Screen name="DeliveryStatus" component={DeliveryStatusScreen} />
         </Stack.Navigator>
     );
 };
@@ -51,11 +49,11 @@ const TabNavigator = () => {
                 tabBarHideOnKeyboard: true,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
-                    if (route.name === "HomeTab") {
+                    if (route.name === "Home") {
                         iconName = focused ? "home" : "home-outline";
-                    } else if (route.name === "ProfileTab") {
+                    } else if (route.name === "Profilo") {
                         iconName = focused ? "person" : "person-outline";
-                    } else if (route.name === "OrderTab") {
+                    } else if (route.name === "Ordine") {
                         iconName = focused ? "cart" : "cart-outline";
                     }
                     return <Icon name={iconName} size={size} color={color} />;
@@ -65,9 +63,9 @@ const TabNavigator = () => {
                 headerShown: false,
             })}
         >
-            <Tab.Screen name="HomeTab" component={HomeStack} />
-            <Tab.Screen name="ProfileTab" component={ProfileStack} />
-            <Tab.Screen name="OrderTab" component={OrderStack} />
+            <Tab.Screen name="Home" component={HomeStack} />
+            <Tab.Screen name="Profilo" component={ProfileStack} />
+            <Tab.Screen name="Ordine" component={OrderStack} />
         </Tab.Navigator>
     );
 };

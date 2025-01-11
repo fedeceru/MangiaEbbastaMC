@@ -178,6 +178,20 @@ export default class AppViewModel {
         }
     }
 
+    //recupero le informazioni relative all'ultimo ordine effettuato
+    static async fetchLastOrderInfo(lastOid) {
+        try {
+            let orderInfo = await CommunicationController.getOrderStatus(lastOid);
+            if (orderInfo && orderInfo.mid) {
+                const menuInfo = await CommunicationController.getMenuDetails(orderInfo.mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
+                orderInfo = {...orderInfo, name: menuInfo.name};                
+            } 
+            return orderInfo;
+        } catch (error) {
+            console.log("Error during fetchLastOrderInfo: ", error);
+        }
+    }
+
     //recupero l'immagine del menu dal DB o dal server se non presente o se non è aggiornata
     static async fetchMenuImage(menu) {
         try {

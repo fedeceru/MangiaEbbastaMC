@@ -8,24 +8,38 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const ProfileScreen = ({ navigation }) => {
     const [userInfo, setUserInfo] = useState([]);
+    const [orderInfo, setOrderInfo] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
 
     useEffect(() => {
         if (isFocused) {
-            const fetchUserInfo = async () => {
+            const fetchProfileInfo = async () => {
                 try {
                     console.log("Fetching user info...");
                     const userData = await AppViewModel.fetchUserInfo();
                     setUserInfo(userData);
+                    console.log("Fetching order info...");
+                    const orderData = await AppViewModel.fetchLastOrderInfo(userData.lastOid);
+                    setOrderInfo(orderData);
                     setIsLoading(false);
                 } catch (error) {
-                    console.error("Error fetching user info:", error);
+                    console.error("Error fetching profile info:", error);
                 }
             }
-            fetchUserInfo();    
+            fetchProfileInfo();    
         }
     }, [isFocused]);
+
+    const formatTimestamp = (timestamp) => {
+        const date = new Date(timestamp);
+        const day = date.getDate().toString().padStart(2, '0'); 
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const year = date.getFullYear(); 
+        const hours = date.getHours().toString().padStart(2, '0'); 
+        const minutes = date.getMinutes().toString().padStart(2, '0'); 
+        return `${day}/${month}/${year}, ${hours}:${minutes}`;
+    };
 
     if (isLoading) {
       return (
@@ -45,7 +59,7 @@ const ProfileScreen = ({ navigation }) => {
 
             {userInfo.cardFullName || userInfo.cardNumber || userInfo.cardExpireMonth || userInfo.cardExpireYear || userInfo.cardCVV ? (
                 <View style={styles.profileCardContainer}>
-                    <Text style={styles.profileCardTitle}>Carta di Credito</Text>
+                    <Text style={styles.profileCardTitle}>Metodo di Pagamento</Text>
                     <View style={styles.profileCardDetails}>
                         {userInfo.cardFullName && <Text style={styles.cardFullName}>{userInfo.cardFullName}</Text>}
                         {userInfo.cardNumber && <Text style={styles.cardNumber}>{userInfo.cardNumber}</Text>}
@@ -61,6 +75,23 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
             ) : null}
 
+            {userInfo.lastOid || userInfo.orderStatus ? (
+                <View style={styles.profileCardContainer}>
+                    <Text style={styles.profileCardTitle}>Ultimo Ordine Effettuato</Text>
+                        {userInfo.orderStatus === "ON_DELIVERY" ? (
+                            <View style={styles.profileCardDetails}> 
+                                <Text>Hai ordinato: {orderInfo.name}</Text>
+                                <Text>Stima di consegna: {formatTimestamp(orderInfo.expectedDeliveryTimestamp)}</Text>
+                            </View> 
+                        ) : userInfo.orderStatus === "COMPLETED" ? (
+                            <View style={styles.profileCardDetails}> 
+                            <Text>Hai ordinato: {orderInfo.name}</Text>
+                                <Text>Consegnato in data: {formatTimestamp(orderInfo.deliveryTimestamp)}</Text>
+                            </View>
+                        ) : null }
+                </View>
+            ) : null}
+
             <View style={styles.profileButtonContainer}>
                 <TouchableOpacity
                     style={styles.profileButton}
@@ -68,15 +99,6 @@ const ProfileScreen = ({ navigation }) => {
                     <View style={styles.profileButtonContent}>
                         <FontAwesome name="user" size={24} color="#fff" style={styles.profileIcon} />
                         <Text style={styles.profileButtonText}>Modifica Profilo</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.profileButton}
-                    onPress={() => navigation.navigate('DeliveryStatus', { lastOid: userInfo.lastOid, orderStatus: userInfo.orderStatus })}>
-                    <View style={styles.profileButtonContent}>
-                        <FontAwesome name="truck" size={24} color="#fff" style={styles.profileIcon} />
-                        <Text style={styles.profileButtonText}>Stato Ordine</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -1,23 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const colors = {
-  primary: '#3498DB',
-  secondary: '#2980B9',
-  background: '#f5f5f5',
-  text: '#333',
-  buttonText: '#fff',
-  border: '#ddd',
-  cardBackground: '#fff',
-  inputBackground: '#fff',
-  tabBar: '#fff',
-  tabBarInactive: '#95a5a6',
-  tabBarActive: '#3498DB',
-};
-
 export const styles = StyleSheet.create({
-  //Generic styles
-
-
   //HomeScreen styles
   homeContainer: {
     flex: 1,
@@ -137,10 +120,24 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   COgoHomeButton: {
+    flex: 1,
     backgroundColor: "#007BFF",
     paddingVertical: 14,
-    paddingHorizontal: 24,
     borderRadius: 8,
+    alignItems: "center",
+    marginRight: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  COgoStatusButton: {
+    flex: 1,
+    backgroundColor: "#28A745",
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    marginLeft: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -503,5 +500,101 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: '#003366',
+  },
+
+  //OrderScreen styles
+  OSmapContainer: {
+    flex: 1,
+    backgroundColor: "#f8f9fc",
+  },
+  OSmap: {
+      ...StyleSheet.absoluteFillObject,
+  },
+  OSstatusContainer: {
+      position: "absolute",
+      top: 20,
+      left: 20,
+      right: 20,
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+      borderRadius: 12,
+      padding: 20,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+      borderWidth: 1,
+      borderColor: "#ddd",
+  },
+  OSstatusImage: {
+      width: 50,
+      height: 50,
+      marginBottom: 10,
+  },
+  OSstatusTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: "#333",
+      marginBottom: 5,
+  },
+  OSstatusSubtitle: {
+      fontSize: 14,
+      color: "#666",
+  },
+  OScontainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 20,
+      backgroundColor: "#f8f9fc",
+  },
+  OSimageWrapper: {
+      alignItems: "center",
+      marginBottom: 20,
+  },
+  OSimageBackground: {
+      backgroundColor: "#eaeaea",
+      borderRadius: 50,
+      padding: 20,
+  },
+  OSimage: {
+      width: 80,
+      height: 80,
+  },
+  OStitle: {
+      fontSize: 22,
+      fontWeight: "bold",
+      color: "#333",
+      marginBottom: 10,
+      textAlign: "center",
+  },
+  OSdescription: {
+      fontSize: 16,
+      color: "#555",
+      marginBottom: 5,
+      textAlign: "center",
+  },
+  OSinstructions: {
+      fontSize: 14,
+      color: "#888",
+      textAlign: "center",
+      marginBottom: 20,
+  },
+  OSbuttonsContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+  },
+  OSprimaryButton: {
+      backgroundColor: "#007bff",
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      alignItems: "center",
+  },
+  OSbuttonText: {
+      fontSize: 16,
+      color: "#fff",
+      fontWeight: "bold",
   },
 });

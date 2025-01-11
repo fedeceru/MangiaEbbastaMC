@@ -36,26 +36,34 @@ const CheckOutScreen = ({ route, navigation }) => {
 
     if (isBought) {
         return (
-            <SafeAreaView style={styles.COcontainer}>
-                <View style={styles.COconfirmationContainer}>
-                    <Image
-                        source={require("../../assets/checkOutIcon.png")}
-                        style={styles.COsuccessIcon}
-                    />
-                    <Text style={styles.COconfirmationTitle}>Ordine Confermato!</Text>
-                    <Text style={styles.COconfirmationMessage}>
-                        Grazie per il tuo ordine. Stiamo preparando il tuo menu e sarà presto consegnato!
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.COgoHomeButton}
-                        onPress={() => navigation.navigate("HomeTab", { screen: "Home" })}
-                    >
-                        <Text style={styles.COgoHomeButtonText}>Torna alla Home</Text>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
+          <SafeAreaView style={styles.COcontainer}>
+            <View style={styles.COconfirmationContainer}>
+              <Image
+                source={require("../../assets/checkOutIcon.png")}
+                style={styles.COsuccessIcon}
+              />
+              <Text style={styles.COconfirmationTitle}>Ordine Confermato!</Text>
+              <Text style={styles.COconfirmationMessage}>
+                Grazie per il tuo ordine. Stiamo preparando il tuo menu e sarà presto consegnato!
+              </Text>
+              <View style={styles.CObuttonsContainer}>
+                <TouchableOpacity
+                  style={styles.COgoHomeButton}
+                  onPress={() => navigation.navigate("Home", { screen: "HomePage" })}
+                >
+                  <Text style={styles.CObuttonText}>Torna alla Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.COgoStatusButton}
+                  onPress={() => navigation.navigate("Ordine")}
+                >
+                  <Text style={styles.CObuttonText}>Stato dell'ordine</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </SafeAreaView>
         );
-    }
+    }  
 
     return (
         <SafeAreaView style={styles.COcontainer}>

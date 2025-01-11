@@ -1,9 +1,10 @@
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, View, Image } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity, View, Image } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AppViewModel from "../../viewmodel/AppViewModel";
 import LoadingScreen from "../LoadingScreen";
 import { useIsFocused } from "@react-navigation/native";
+import { styles } from "../../Styles";
 
 const OrderStatusScreen = ({ navigation }) => {
     const [orderInfo, setOrderInfo] = useState(null);
@@ -22,6 +23,8 @@ const OrderStatusScreen = ({ navigation }) => {
                 if (status === "ON_DELIVERY") {
                     intervalId.current = setInterval(droneTracking, 5000);
                 }       
+            }).catch((error) => {
+                console.log(error);
             });
         } else {
             clearInterval(intervalId.current); 
@@ -70,8 +73,8 @@ const OrderStatusScreen = ({ navigation }) => {
                     longitudeDelta: 0.02,
                 });
                 setIsLoading(false);
+                return orderData.status;
             }
-            return orderData.status;
         } catch (error) {
             console.log(error);
             setIsLoading(false);
@@ -93,19 +96,19 @@ const OrderStatusScreen = ({ navigation }) => {
 
     if (!orderStatus) {
         return (
-            <SafeAreaView style={styles.container}>
-                <View style={styles.imageWrapper}>
-                    <View style={styles.imageBackground}>
-                        <Image source={require("../../assets/emptyCartIcon.png")} style={styles.image} />
+            <SafeAreaView style={styles.OScontainer}>
+                <View style={styles.OSimageWrapper}>
+                    <View style={styles.OSimageBackground}>
+                        <Image source={require("../../assets/emptyCartIcon.png")} style={styles.OSimage} />
                     </View>
                 </View>
-                <Text style={styles.title}>Nessun ordine trovato</Text>
-                <Text style={styles.description}>Al momento non ci sono ordini disponibili.</Text>
-                <Text style={styles.instructions}>Puoi ordinare un menu nella sezione dedicata!</Text>
+                <Text style={styles.OStitle}>Nessun ordine trovato</Text>
+                <Text style={styles.OSdescription}>Al momento non ci sono ordini disponibili.</Text>
+                <Text style={styles.OSinstructions}>Puoi ordinare un menu nella sezione dedicata!</Text>
                 
-                <View style={styles.buttonsContainer}>
-                    <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.navigate('HomeTab')}>
-                        <Text style={styles.buttonText}>Ordina</Text>
+                <View style={styles.OSbuttonsContainer}>
+                    <TouchableOpacity style={styles.OSprimaryButton} onPress={() => navigation.navigate('Home')}>
+                        <Text style={styles.OSbuttonText}>Ordina</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -113,9 +116,9 @@ const OrderStatusScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.mapContainer}>                
+        <SafeAreaView style={styles.OSmapContainer}>                
             <MapView
-                style={styles.map}
+                style={styles.OSmap}
                 initialRegion={region || { latitude: 0, longitude: 0, latitudeDelta: 0.02, longitudeDelta: 0.02 }}
                 scrollEnabled={true}
                 showsCompass={true}
@@ -161,19 +164,19 @@ const OrderStatusScreen = ({ navigation }) => {
                     />
                 )}
             </MapView>
-            <View style={styles.statusContainer}>
+            <View style={styles.OSstatusContainer}>
                 <Image
                     source={
                         orderStatus === "COMPLETED"
                             ? require("../../assets/deliverySuccessIcon.png")
                             : require("../../assets/deliveryOnTheWayIcon.png")
                     }
-                    style={styles.statusImage}
+                    style={styles.OSstatusImage}
                 />
-                <Text style={styles.statusTitle}>
+                <Text style={styles.OSstatusTitle}>
                     {orderStatus === "COMPLETED" ? "Ordine Consegnato" : "In Consegna"}
                 </Text>
-                <Text style={styles.statusSubtitle}>
+                <Text style={styles.OSstatusSubtitle}>
                     {orderStatus === "COMPLETED"
                         ? `Consegnato alle ${extractTime(orderInfo.deliveryTimestamp)}`
                         : `Arrivo previsto alle ${extractTime(orderInfo.expectedDeliveryTimestamp)}`}
@@ -184,98 +187,3 @@ const OrderStatusScreen = ({ navigation }) => {
 };
 
 export default OrderStatusScreen;
-
-const styles = StyleSheet.create({
-    mapContainer: {
-        flex: 1,
-        backgroundColor: "#f8f9fc",
-    },
-    map: {
-        ...StyleSheet.absoluteFillObject,
-    },
-    statusContainer: {
-        position: "absolute",
-        top: 20,
-        left: 20,
-        right: 20,
-        backgroundColor: "rgba(255, 255, 255, 0.65)",
-        borderRadius: 0.60,
-        padding: 20,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    statusImage: {
-        width: 50,
-        height: 50,
-        marginBottom: 10,
-    },
-    statusTitle: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#333",
-        marginBottom: 5,
-    },
-    statusSubtitle: {
-        fontSize: 14,
-        color: "#666",
-    },
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 20,
-        backgroundColor: "#f8f9fc",
-    },
-    imageWrapper: {
-        alignItems: "center",
-        marginBottom: 20,
-    },
-    imageBackground: {
-        backgroundColor: "#eaeaea",
-        borderRadius: 50,
-        padding: 20,
-    },
-    image: {
-        width: 80,
-        height: 80,
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: "bold",
-        color: "#333",
-        marginBottom: 10,
-        textAlign: "center",
-    },
-    description: {
-        fontSize: 16,
-        color: "#555",
-        marginBottom: 5,
-        textAlign: "center",
-    },
-    instructions: {
-        fontSize: 14,
-        color: "#888",
-        textAlign: "center",
-        marginBottom: 20,
-    },
-    buttonsContainer: {
-        flexDirection: "row",
-        justifyContent: "center",
-    },
-    primaryButton: {
-        backgroundColor: "#007bff",
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        alignItems: "center",
-    },
-    buttonText: {
-        fontSize: 16,
-        color: "#fff",
-        fontWeight: "bold",
-    },
-});

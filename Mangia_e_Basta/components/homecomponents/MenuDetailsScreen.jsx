@@ -48,7 +48,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                         },
                         {
                             text: "Modifica Profilo",
-                            onPress: () => navigation.navigate('ProfileTab'),
+                            onPress: () => navigation.navigate('Profilo'),
                         },
                     ],
                     { cancelable: false } 
@@ -68,7 +68,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                         },
                         {
                             text: "Visualizza Ordine",
-                            onPress: () => navigation.navigate('OrderTab'), 
+                            onPress: () => navigation.navigate('Ordine'), 
                         },
                     ],
                     { cancelable: false } 

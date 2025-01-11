@@ -6,7 +6,7 @@ const LoadingScreen = () => {
   return (
     <SafeAreaView style={styles.loadingContainer}>
       <Image 
-        source={{ uri: 'https://cdn-icons-png.flaticon.com/128/8095/8095039.png' }} 
+        source={require( "../assets/splashDroneIcon.png")} 
         style={styles.loadingIcon} 
       />
       <ActivityIndicator 

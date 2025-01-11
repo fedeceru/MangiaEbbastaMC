@@ -22,42 +22,34 @@ const EditProfileScreen = ({ route, navigation }) => {
 
     const validateFields = () => {
         const newErrors = {};
-
+        
         if (!updatedUserInfo.firstName) {
             newErrors.firstName = "Il nome è obbligatorio.";
         }
-
         if (!updatedUserInfo.lastName) {
             newErrors.lastName = "Il cognome è obbligatorio.";
         }
-
         if (!updatedUserInfo.cardFullName || updatedUserInfo.cardFullName.split(" ").length !== 2) {
             newErrors.cardFullName = "Nome e cognome sulla carta sono obbligatori.";
         }
-
         if (!/^[0-9]{16}$/.test(updatedUserInfo.cardNumber)) {
             newErrors.cardNumber = "Il numero della carta deve essere di 16 cifre.";
         }
-
         if (!/^([1-9]|1[0-2])$/.test(updatedUserInfo.cardExpireMonth)) {
             newErrors.cardExpireMonth = "Il mese deve essere compreso tra 1 e 12.";
         }
-
         if (!/^[0-9]{4}$/.test(updatedUserInfo.cardExpireYear)) {
             newErrors.cardExpireYear = "L'anno di scadenza deve essere di 4 cifre.";
         }
-
         if (!/^[0-9]{3}$/.test(updatedUserInfo.cardCVV)) {
             newErrors.cardCVV = "Il CVV deve essere di 3 cifre.";
         }
 
         setErrors(newErrors);
-        //mi restituisce true se non ci sono errori 
         return Object.keys(newErrors).length === 0; 
     };
 
     const handleSave = async () => {
-        //controlla che non ci siano errori
         if (!validateFields()) {
             return; 
         }
