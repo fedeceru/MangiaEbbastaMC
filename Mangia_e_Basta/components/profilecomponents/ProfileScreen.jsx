@@ -5,15 +5,17 @@ import { styles } from '../../Styles';
 import LoadingScreen from "../LoadingScreen";
 import { useIsFocused } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+import { set } from 'react-hook-form';
 
 const ProfileScreen = ({ navigation }) => {
     const [userInfo, setUserInfo] = useState([]);
     const [orderInfo, setOrderInfo] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(null);
     const isFocused = useIsFocused();
 
     useEffect(() => {
         if (isFocused) {
+            setIsLoading(true);
             const fetchProfileInfo = async () => {
                 try {
                     console.log("Fetching user info...");
@@ -31,9 +33,7 @@ const ProfileScreen = ({ navigation }) => {
                 }
             }
             fetchProfileInfo();    
-        } else {
-            setIsLoading(true);
-        }
+        } 
     }, [isFocused]);
 
     const formatTimestamp = (timestamp) => {

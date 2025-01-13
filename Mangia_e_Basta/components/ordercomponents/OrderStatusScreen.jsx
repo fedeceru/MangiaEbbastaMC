@@ -5,7 +5,6 @@ import AppViewModel from "../../viewmodel/AppViewModel";
 import LoadingScreen from "../LoadingScreen";
 import { useIsFocused } from "@react-navigation/native";
 import { styles } from "../../Styles";
-import { set } from "react-hook-form";
 
 const OrderStatusScreen = ({ navigation }) => {
     const [orderInfo, setOrderInfo] = useState(null);
@@ -23,9 +22,12 @@ const OrderStatusScreen = ({ navigation }) => {
             fetchOrderData().then((status) => {
                 if (status === "ON_DELIVERY") {
                     intervalId.current = setInterval(droneTracking, 5000);
+                } else {
+                    setIsLoading(false);
                 }       
             }).catch((error) => {
                 console.log(error);
+                setIsLoading(false);
             });
         } else {
             clearInterval(intervalId.current); 
@@ -86,7 +88,7 @@ const OrderStatusScreen = ({ navigation }) => {
         );
     }
 
-    if (!orderStatus) {
+    if (!orderStatus && !isLoading) {
         return (
             <SafeAreaView style={styles.OScontainer}>
                 <View style={styles.OSimageWrapper}>
