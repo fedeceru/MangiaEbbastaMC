@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, SafeAreaView, ScrollView } from "r
 import AppViewModel from "../../viewmodel/AppViewModel";
 import { styles } from "../../Styles";
 import LoadingScreen from "../LoadingScreen";
+//faccio una schermata dedicata per il checkout e un'altra per la conferma dell'ordine in modo da poterne salvare lo stato e poterlo ripristinare in un secondo avvio
 
 const CheckOutScreen = ({ route, navigation }) => {
     const { menu } = route.params;
@@ -16,10 +17,11 @@ const CheckOutScreen = ({ route, navigation }) => {
             if (result) {
                 console.log("Ordine confermato per:", menu.name);
                 setIsBought(true);
-                setIsLoading(false);
             }    
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -34,7 +36,7 @@ const CheckOutScreen = ({ route, navigation }) => {
         );
     }
 
-    if (isBought) {
+    if (isBought === true) {
         return (
           <SafeAreaView style={styles.COcontainer}>
             <View style={styles.COconfirmationContainer}>

@@ -19,9 +19,11 @@ const ProfileScreen = ({ navigation }) => {
                     console.log("Fetching user info...");
                     const userData = await AppViewModel.fetchUserInfo();
                     setUserInfo(userData);
-                    console.log("Fetching order info...");
-                    const orderData = await AppViewModel.fetchLastOrderInfo(userData.lastOid);
-                    setOrderInfo(orderData);
+                    if (userData.lastOid !== null) {
+                        console.log("Fetching order info...");
+                        const orderData = await AppViewModel.fetchLastOrderInfo(userData.lastOid);
+                        setOrderInfo(orderData);
+                    }
                     setIsLoading(false);
                 } catch (error) {
                     console.error("Error fetching profile info:", error);

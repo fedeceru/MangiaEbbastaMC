@@ -40,37 +40,32 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                 Alert.alert(
                     "Impossibile Procedere",
                     `Non puoi completare l'acquisto perché ${reason}`,
-                    [
-                        {
-                            text: "Annulla",
-                            onPress: onCancel,
-                            style: "cancel", 
-                        },
-                        {
-                            text: "Modifica Profilo",
-                            onPress: () => navigation.navigate('Profilo'),
-                        },
-                    ],
+                    [{
+                        text: "Annulla",
+                        onPress: onCancel,
+                        style: "cancel", 
+                    },
+                    {
+                        text: "Modifica Profilo",
+                        onPress: () => navigation.navigate('Profilo'),
+                    }],
                     { cancelable: false } 
                 );
             }
-
             if (isOrderInProgress) {
                 const reason = "hai già un ordine in corso, non puoi farne un altro fiché l'utimo non è stato consegnato";                 
                 Alert.alert(
                     "Impossibile Procedere",
                     `Non puoi completare l'acquisto perché ${reason}`,
-                    [
-                        {
-                            text: "Annulla",
-                            onPress: onCancel,
-                            style: "cancel", 
-                        },
-                        {
-                            text: "Visualizza Ordine",
-                            onPress: () => navigation.navigate('Ordine'), 
-                        },
-                    ],
+                    [{
+                        text: "Annulla",
+                        onPress: onCancel,
+                        style: "cancel", 
+                    },
+                    {
+                        text: "Visualizza Ordine",
+                        onPress: () => navigation.navigate('Ordine'), 
+                    }],
                     { cancelable: false } 
                 );
             }
@@ -81,13 +76,13 @@ const MenuDetailsScreen = ({ route, navigation }) => {
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     if (isLoading) {
         return (
             <LoadingScreen />
         );
-    }
+    };
 
     return (
         <SafeAreaView style={styles.detailsContainer}>

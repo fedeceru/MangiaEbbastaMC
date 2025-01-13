@@ -12,7 +12,7 @@ const OrderStatusScreen = ({ navigation }) => {
     const [menuInfo, setMenuInfo] = useState(null);
     const [dronePosition, setDronePosition] = useState(null);
     const [deliveryLocation, setDeliveryLocation] = useState(null);
-    const [isLoading, setIsLoading] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [region, setRegion] = useState(null);
     const isFocused = useIsFocused();
     const intervalId = useRef(null); 
@@ -53,7 +53,6 @@ const OrderStatusScreen = ({ navigation }) => {
         try {
             const orderData = await AppViewModel.fetchOrderStatus();
             if (orderData) {
-                setIsLoading(true);
                 setOrderStatus(orderData.status);
                 setOrderInfo({
                     creationTimestamp: orderData.creationTimestamp,
@@ -72,11 +71,12 @@ const OrderStatusScreen = ({ navigation }) => {
                     latitudeDelta: 0.02,
                     longitudeDelta: 0.02,
                 });
-                setIsLoading(false);
                 return orderData.status;
             }
         } catch (error) {
             console.log(error);
+            setIsLoading(false);
+        } finally {
             setIsLoading(false);
         }
     };
@@ -94,7 +94,7 @@ const OrderStatusScreen = ({ navigation }) => {
         );
     }
 
-    if (!orderStatus) {
+    if (!orderStatus && !isLoading) {
         return (
             <SafeAreaView style={styles.OScontainer}>
                 <View style={styles.OSimageWrapper}>

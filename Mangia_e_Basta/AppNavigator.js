@@ -10,6 +10,9 @@ import OrderStatusScreen from "./components/ordercomponents/OrderStatusScreen";
 import CheckOutScreen from "./components/homecomponents/CheckOutScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import SplashScreen from "./components/initcomponents/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,8 +74,43 @@ const TabNavigator = () => {
 };
 
 export const MyAppNavigator = () => {
+    const [initNavigationState, setInitNavigationState] = useState(null);
+    const [isReady, setIsReady] = useState(false);
+
+    useEffect(() => {
+        const loadNavigationState = async () => {
+            try {
+                const savedState = await AsyncStorage.getItem("navigationState");
+                if (savedState) {
+                    setInitNavigationState(JSON.parse(savedState));
+                }
+            } catch (error) {
+                console.log("Error during the loading of the navigation state: ", error);
+            } finally {
+                setIsReady(true);
+            }
+        }
+
+        loadNavigationState();
+    }, []);
+
+    const saveNavigationState = async (state) => {
+        try {
+            const stateString = JSON.stringify(state);
+            await AsyncStorage.setItem("navigationState", stateString);
+        } catch (error) {
+            console.log("Error during the saving of the navigation state: ", error);
+        }
+    };
+
+    if (!isReady) {
+        return (
+            <SplashScreen />
+        )
+    }
+
     return (
-        <NavigationContainer>
+        <NavigationContainer initialState={initNavigationState} onStateChange={saveNavigationState}>
             <SafeAreaView style={{ flex: 1 }}>
                 <StatusBar />
                 <TabNavigator />
