@@ -5,6 +5,7 @@ import AppViewModel from "../../viewmodel/AppViewModel";
 import LoadingScreen from "../LoadingScreen";
 import { useIsFocused } from "@react-navigation/native";
 import { styles } from "../../Styles";
+import { set } from "react-hook-form";
 
 const OrderStatusScreen = ({ navigation }) => {
     const [orderInfo, setOrderInfo] = useState(null);
@@ -38,14 +39,6 @@ const OrderStatusScreen = ({ navigation }) => {
             setOrderInfo({ deliveryTimestamp: orderData.deliveryTimestamp });
             clearInterval(intervalId.current);
         }
-        if (!region) {
-            setRegion({
-                latitude: orderData.currentPosition.lat,
-                longitude: orderData.currentPosition.lng,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
-            });
-        }
         setDronePosition(orderData.currentPosition);
     };
 
@@ -71,14 +64,13 @@ const OrderStatusScreen = ({ navigation }) => {
                     latitudeDelta: 0.02,
                     longitudeDelta: 0.02,
                 });
+                setIsLoading(false);
                 return orderData.status;
             }
         } catch (error) {
             console.log(error);
             setIsLoading(false);
-        } finally {
-            setIsLoading(false);
-        }
+        } 
     };
 
     const extractTime = (timestamp) => {
@@ -94,7 +86,7 @@ const OrderStatusScreen = ({ navigation }) => {
         );
     }
 
-    if (!orderStatus && !isLoading) {
+    if (!orderStatus) {
         return (
             <SafeAreaView style={styles.OScontainer}>
                 <View style={styles.OSimageWrapper}>
@@ -123,6 +115,7 @@ const OrderStatusScreen = ({ navigation }) => {
                 scrollEnabled={true}
                 showsCompass={true}
                 zoomControlEnabled={true}
+                region={region}
             >
                 {deliveryLocation && (
                     <Marker

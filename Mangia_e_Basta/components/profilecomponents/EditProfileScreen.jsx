@@ -2,6 +2,7 @@ import { ScrollView, TouchableOpacity, View, Text, TextInput } from "react-nativ
 import { useState } from "react";
 import AppViewModel from "../../viewmodel/AppViewModel";
 import { styles } from "../../Styles"; 
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const EditProfileScreen = ({ route, navigation }) => {
     const { userInfo } = route.params;
@@ -64,7 +65,8 @@ const EditProfileScreen = ({ route, navigation }) => {
     };
 
     return (
-        <ScrollView style={styles.editScrollViewContainer}>
+        <ScrollView>
+            <SafeAreaView style={styles.editScrollViewContainer}>
             <View style={styles.editInputContainer}>
                 <Text style={styles.editInputLabel}>Nome:</Text>
                 <TextInput
@@ -158,6 +160,7 @@ const EditProfileScreen = ({ route, navigation }) => {
                     <Text style={styles.editButtonText}>Salva modifiche</Text>
                 </TouchableOpacity>
             </View>
+            </SafeAreaView>
         </ScrollView>
     );
 };

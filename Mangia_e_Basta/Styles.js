@@ -343,7 +343,7 @@ export const styles = StyleSheet.create({
   //ProfileScreen styles
   editScrollViewContainer: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F5F5F5',
     padding: 20,
   },
   editInputContainer: {

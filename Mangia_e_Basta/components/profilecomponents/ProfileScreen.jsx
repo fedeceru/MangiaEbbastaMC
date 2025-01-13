@@ -24,12 +24,15 @@ const ProfileScreen = ({ navigation }) => {
                         const orderData = await AppViewModel.fetchLastOrderInfo(userData.lastOid);
                         setOrderInfo(orderData);
                     }
-                    setIsLoading(false);
                 } catch (error) {
                     console.error("Error fetching profile info:", error);
+                } finally {
+                    setIsLoading(false);
                 }
             }
             fetchProfileInfo();    
+        } else {
+            setIsLoading(true);
         }
     }, [isFocused]);
 

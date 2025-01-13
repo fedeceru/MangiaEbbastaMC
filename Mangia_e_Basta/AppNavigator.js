@@ -13,6 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SplashScreen from "./components/initcomponents/SplashScreen";
+import ConfirmationScreen from "./components/homecomponents/ConfirmationScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,6 +24,7 @@ const HomeStack = () => {
             <Stack.Screen name="HomePage" component={HomeScreen} options={{headerShown: false}}/>
             <Stack.Screen name="MenuDetails" component={MenuDetailsScreen} />
             <Stack.Screen name="CheckOut" component={CheckOutScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="Confirmation" component={ConfirmationScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 };
@@ -31,7 +33,7 @@ const ProfileStack = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
         </Stack.Navigator>
     );
 };
