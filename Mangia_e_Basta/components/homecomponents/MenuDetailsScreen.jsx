@@ -74,7 +74,7 @@ const MenuDetailsScreen = ({ route, navigation }) => {
                 navigation.navigate('CheckOut', {menu});
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 

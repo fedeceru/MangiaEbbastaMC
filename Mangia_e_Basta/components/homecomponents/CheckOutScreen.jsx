@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, SafeAreaView, ScrollView } from "react-native";
+import React from "react";
+import { View, Text, Image, TouchableOpacity, SafeAreaView, ScrollView, Alert } from "react-native";
 import AppViewModel from "../../viewmodel/AppViewModel";
 import { styles } from "../../Styles";
 
@@ -7,15 +7,18 @@ const CheckOutScreen = ({ route, navigation }) => {
     const { menu } = route.params;
 
     const handleConfirmOrder = async () => {
-        try {
-            const result = await AppViewModel.buyMenu(menu.mid);
-            if (result) {
-                console.log("Ordine confermato per:", menu.name);
-                navigation.navigate("Confirmation");
-            }    
-        } catch (error) {
-            console.log(error);
-        } 
+        const result = await AppViewModel.buyMenu(menu.mid);
+        if (result) {
+            console.log("Ordine confermato per:", menu.name);
+            navigation.navigate("Confirmation");
+        } else {
+            Alert.alert(
+                "Impossibile Procedere",
+                "Errore durante l'acquisto",
+                [{ text: "OK" }],
+                { cancelable: false }
+            );
+        }
     };
 
     const handleCancelOrder = () => {

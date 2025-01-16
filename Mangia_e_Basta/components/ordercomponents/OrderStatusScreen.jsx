@@ -31,6 +31,7 @@ const OrderStatusScreen = ({ navigation }) => {
             });
         } else {
             clearInterval(intervalId.current); 
+            setIsLoading(true);
         }
     }, [isFocused]);
 

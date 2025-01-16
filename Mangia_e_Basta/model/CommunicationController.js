@@ -55,7 +55,7 @@ export default class CommunicationController {
       } else {
         // The server responded with an error status.
         const errorObject = await httpResponse.json();
-        console.error("Error message from the server:", errorObject);
+        console.log("Error message from the server:", errorObject);
         throw errorObject;
       }
     }
@@ -120,7 +120,7 @@ export default class CommunicationController {
           lat: lat,
           lng: lng,
         },
-      }
+      };
       console.log("buyMenu called with ebdpoint: " + endpoint + " and bodyParams: " + JSON.stringify(bodyParams));
       return await this.genericRequest(endpoint, "POST", {}, bodyParams);
     }

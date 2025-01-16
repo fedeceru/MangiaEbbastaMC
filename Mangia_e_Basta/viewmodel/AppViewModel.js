@@ -148,19 +148,20 @@ export default class AppViewModel {
 
     //acquisto di un menu, se l'ordine va a buon fine mi salvo in asyncStorage l'oid dell'ordine e il mid del menu acquistato
     static async buyMenu(mid) {
+        if (!this.currentLocation) {
+            console.log("currentLocation not initialized");
+            return;
+        }
         try {
-            if (!this.currentLocation) {
-                console.log("currentLocation not initialized");
-                return;
-            }
             const result = await CommunicationController.buyMenu(mid, this.currentLocation.coords.latitude, this.currentLocation.coords.longitude);
             if (result && result.oid) {
                 console.log("Order placed successfully with oid: ", result.oid);
                 await AsyncStorage.setItem( 'oid', JSON.stringify(result.oid));
-            }
-            return result;
+                return result;
+            } 
         } catch (error) {
             console.log("Error during buyMenu: ", error);
+            return null;
         }
     }
 

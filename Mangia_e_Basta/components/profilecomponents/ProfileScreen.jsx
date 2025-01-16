@@ -26,7 +26,7 @@ const ProfileScreen = ({ navigation }) => {
                         setOrderInfo(orderData);
                     }
                 } catch (error) {
-                    console.error("Error fetching profile info:", error);
+                    console.log("Error fetching profile info:", error);
                 } finally {
                     setIsLoading(false);
                 }
