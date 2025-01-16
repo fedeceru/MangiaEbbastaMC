@@ -51,7 +51,7 @@ const LocationScreen = ({ handleLocationPermission, accessCounter }) => {
             </View>
             <Text style={styles.locationTitle}>Condividi la tua posizione</Text>
             <Text style={styles.locationDescription}>
-                La useremo per mostrarti i menu nei dintorni e la mappa per tenerne traccia.
+                La useremo per mostrarti i menù nei dintorni e la mappa per tenerne traccia.
             </Text>
             <TouchableOpacity style={styles.locationButton} onPress={tryGetPermission}>
                 <Text style={styles.locationButtonText}>Concedi Permesso</Text>

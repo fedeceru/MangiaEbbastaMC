@@ -99,7 +99,7 @@ const OrderStatusScreen = ({ navigation }) => {
                 </View>
                 <Text style={styles.OStitle}>Nessun ordine trovato</Text>
                 <Text style={styles.OSdescription}>Al momento non ci sono ordini disponibili.</Text>
-                <Text style={styles.OSinstructions}>Puoi ordinare un menu nella sezione dedicata!</Text>
+                <Text style={styles.OSinstructions}>Puoi ordinare un menù nella sezione dedicata!</Text>
                 
                 <View style={styles.OSbuttonsContainer}>
                     <TouchableOpacity style={styles.OSprimaryButton} onPress={() => navigation.navigate('Home')}>
@@ -134,8 +134,8 @@ const OrderStatusScreen = ({ navigation }) => {
                         anchor={{ x: 0.5, y: 0.5 }}
                         coordinate={{ latitude: menuInfo.menuLocation.lat, longitude: menuInfo.menuLocation.lng }}
                         image={require("../../assets/menuMarker.png")}
-                        title="Posizione del menu"
-                        description="Il menu che hai acquistato"
+                        title="Posizione del menù"
+                        description="Il menù che hai acquistato"
                     />
                 )}
                 {dronePosition && (

@@ -13,7 +13,7 @@ const ConfirmationScreen = ({ navigation }) => {
                 />
                 <Text style={styles.COconfirmationTitle}>Ordine Confermato!</Text>
                 <Text style={styles.COconfirmationMessage}>
-                    Grazie per il tuo ordine. Stiamo preparando il tuo menu e sarà presto consegnato!
+                    Grazie per il tuo ordine. Stiamo preparando il tuo menù e sarà presto consegnato!
                 </Text>
                 <View style={styles.CObuttonsContainer}>
                     <TouchableOpacity
