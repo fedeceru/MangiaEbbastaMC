@@ -14,7 +14,7 @@ const CheckOutScreen = ({ route, navigation }) => {
         } else {
             Alert.alert(
                 "Impossibile Procedere",
-                "Errore durante l'acquisto",
+                "Metodo di pagamento non valido",
                 [{ text: "OK" }],
                 { cancelable: false }
             );
