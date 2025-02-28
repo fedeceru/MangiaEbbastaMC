@@ -23,6 +23,7 @@ import androidx.navigation.navigation
 import com.example.mangia_e_basta_kotlin.AppViewModel
 import com.example.mangia_e_basta_kotlin.components.home.CheckOutScreen
 import com.example.mangia_e_basta_kotlin.components.home.HomeScreen
+import com.example.mangia_e_basta_kotlin.components.home.IngScreen
 import com.example.mangia_e_basta_kotlin.components.home.MenuDetailsScreen
 import com.example.mangia_e_basta_kotlin.components.order.OrderScreen
 import com.example.mangia_e_basta_kotlin.components.profile.EditProfileScreen
@@ -57,6 +58,7 @@ fun Root(appViewModel: AppViewModel) {
             ) {
                 composable("home") { HomeScreen(appViewModel, navController) }
                 composable("menuDetails") { MenuDetailsScreen(appViewModel, navController) }
+                composable("ingredients") { IngScreen(appViewModel, navController) }
                 composable("checkOut") { CheckOutScreen(appViewModel, navController) }
             }
 
@@ -94,7 +96,7 @@ fun BottomNavigationBar(navController: NavController, currentRoute: String?) {
                     restoreState = true
                 }
             },
-            selected = currentRoute?.startsWith("menuDetails") == true || currentRoute?.startsWith("checkOut") == true || currentRoute?.startsWith("home") == true,
+            selected = currentRoute?.startsWith("menuDetails") == true || currentRoute?.startsWith("checkOut") == true || currentRoute?.startsWith("home") == true || currentRoute?.startsWith("ingredients") == true,
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") }
         )
 
@@ -130,7 +132,7 @@ fun BottomNavigationBar(navController: NavController, currentRoute: String?) {
 
 fun getTabScreenFromScreen(screen: String): String {
     return when (screen) {
-        "home", "menuDetails", "checkOut" -> "homeStack"
+        "home", "menuDetails", "checkOut", "ingredients" -> "homeStack"
         "order" -> "orderStack"
         "profile", "editProfile" -> "profileStack"
         else -> "homeStack"

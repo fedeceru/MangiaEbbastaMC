@@ -124,13 +124,13 @@ data class OrderStatusResponse(
 )
 
 // INGREDIENTI
-/*@Serializable
+@Serializable
 data class IngredientFromGet(
     val name: String,
     val description: String,
     val bio: Boolean,
     val origin: String
-)*/
+)
 
 // Room
 @Entity (tableName = "imagesDB")

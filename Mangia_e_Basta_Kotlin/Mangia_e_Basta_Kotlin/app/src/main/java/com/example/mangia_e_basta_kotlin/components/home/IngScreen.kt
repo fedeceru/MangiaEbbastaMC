@@ -1,4 +1,4 @@
-/*package com.example.mangia_e_basta_kotlin.components.home
+package com.example.mangia_e_basta_kotlin.components.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -152,4 +152,4 @@ fun ShowDialog(selectedIngredient: IngredientFromGet ,onClick: () -> Unit) {
             )
         }
     )
-}*/
+}

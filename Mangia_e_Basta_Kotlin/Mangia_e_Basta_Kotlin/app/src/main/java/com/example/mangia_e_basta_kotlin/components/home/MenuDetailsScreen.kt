@@ -139,13 +139,13 @@ fun MenuDetailsScreen(appViewModel: AppViewModel, navController: NavController) 
                             Spacer(modifier = Modifier.weight(1F))
 
                             //INGREDIENTI
-                            /*Button (
+                            Button (
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                     onClick = { navController.navigate("ingredients") },
                             modifier = Modifier.padding(top = 10.dp).padding(horizontal = 16.dp).fillMaxWidth()
                             ) {
                                 Text(text = "Ingredienti")
-                            }*/
+                            }
                         }
                     }
                 }

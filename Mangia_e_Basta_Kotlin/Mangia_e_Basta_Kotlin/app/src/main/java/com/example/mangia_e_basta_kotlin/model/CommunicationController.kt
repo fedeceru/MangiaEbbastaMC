@@ -213,11 +213,11 @@ object CommunicationController {
         }
     }
 
-    /* INGREDIENTI
+    //INGREDIENTI
     suspend fun getIngredients(mid: Int, sid: String): List<IngredientFromGet> {
         Log.d(TAG, "getIngredients")
 
-        val url = BASE_URL + "/menu/$mid/ingredients"
+        val url = BASE_URL + "/menu/gennaio/$mid/ingredients"
         val queryParameters = mapOf("sid" to sid)
 
         val httpResponse = genericRequest(url, HttpMethod.GET, queryParameters)
@@ -228,5 +228,4 @@ object CommunicationController {
         val result: List<IngredientFromGet> = httpResponse.body()
         return result
     }
-    */
 }

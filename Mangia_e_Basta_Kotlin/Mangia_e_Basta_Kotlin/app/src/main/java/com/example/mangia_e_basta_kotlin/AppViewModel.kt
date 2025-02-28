@@ -10,6 +10,7 @@ import com.example.mangia_e_basta_kotlin.model.CompletedOrderResponse
 import com.example.mangia_e_basta_kotlin.model.DataBaseManager
 import com.example.mangia_e_basta_kotlin.model.DataStoreManager
 import com.example.mangia_e_basta_kotlin.model.DeliveryLocationAndSid
+import com.example.mangia_e_basta_kotlin.model.IngredientFromGet
 import com.example.mangia_e_basta_kotlin.model.MenuAndImg
 import com.example.mangia_e_basta_kotlin.model.MenuDetails
 import com.example.mangia_e_basta_kotlin.model.MenuDetailsAndImg
@@ -61,8 +62,8 @@ class AppViewModel(
     val orderInfoAndMenu: StateFlow<OrderInfoAndMenu?> = _orderInfoAndMenu
 
     // INGREDIENTI
-    /*private val _ingredients = MutableStateFlow(null as List<IngredientFromGet>?)
-    val ingredients: StateFlow<List<IngredientFromGet>?> = _ingredients*/
+    private val _ingredients = MutableStateFlow(null as List<IngredientFromGet>?)
+    val ingredients: StateFlow<List<IngredientFromGet>?> = _ingredients
 
     fun checkfirstRun() {
         viewModelScope.launch {
@@ -217,13 +218,13 @@ class AppViewModel(
     }
 
     // INGREDIENTI
-    /*suspend fun getIngredients() {
+    suspend fun getIngredients() {
         withContext(Dispatchers.IO) {
             val result = CommunicationController.getIngredients(_lastMenuMidAndImg.value!!.mid, _user.value!!.sid)
             Log.d("IngScreen", "${result.size} ingredienti per ${_menuDetailsAndImg.value!!.menu.name}")
             _ingredients.value = result
         }
-    }*/
+    }
 
     // Setters
     fun setScreen(screen: String) {
